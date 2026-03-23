@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
       --bg: #f4fbf8;
       --bg-deep: #d9efe8;
       --panel: rgba(255, 255, 255, 0.84);
-      --panel-strong: rgba(9, 54, 50, 0.92);
+      --panel-strong: rgba(9, 54, 50, 0.94);
       --text: #113634;
       --muted: #4e6e69;
       --brand: #0f766e;
@@ -88,12 +88,12 @@
       margin: 16px 0 10px;
       font-size: clamp(32px, 4vw, 52px);
       line-height: 1.05;
-      max-width: 760px;
+      max-width: 820px;
     }
 
     .hero p {
       margin: 0;
-      max-width: 760px;
+      max-width: 820px;
       font-size: 16px;
       line-height: 1.75;
       color: rgba(239, 255, 248, 0.92);
@@ -103,7 +103,7 @@
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
+      grid-template-columns: 1.4fr 1fr;
       gap: 18px;
       margin-top: 24px;
       align-items: end;
@@ -141,6 +141,19 @@
       color: rgba(239, 255, 248, 0.88);
     }
 
+    .status {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(127, 227, 180, 0.14);
+      color: #d8fff0;
+      border: 1px solid rgba(127, 227, 180, 0.18);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -156,6 +169,16 @@
       box-shadow: var(--shadow);
       padding: 20px;
       backdrop-filter: blur(8px);
+    }
+
+    .panel-dark {
+      background: var(--panel-strong);
+      color: #effff8;
+    }
+
+    .panel-dark h2,
+    .panel-dark .subtext {
+      color: inherit;
     }
 
     .card h2 {
@@ -178,10 +201,11 @@
       font-size: 14px;
     }
 
+    .span-8 { grid-column: span 8; }
     .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
     .span-5 { grid-column: span 5; }
     .span-4 { grid-column: span 4; }
-    .span-8 { grid-column: span 8; }
 
     .chips {
       display: flex;
@@ -202,7 +226,9 @@
     .phase-grid,
     .team-grid,
     .deliver-grid,
-    .company-grid {
+    .company-grid,
+    .reference-grid,
+    .guide-grid {
       display: grid;
       gap: 12px;
     }
@@ -212,20 +238,90 @@
       margin-top: 14px;
     }
 
+    .phase-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .team-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .deliver-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .company-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 12px;
+    }
+
+    .reference-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .guide-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
     .prompt,
     .phase,
     .team,
     .deliver,
-    .company {
+    .company,
+    .reference,
+    .guide {
       padding: 14px;
       border-radius: 18px;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.76);
     }
 
+    .guide {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(233, 250, 244, 0.95));
+    }
+
     .prompt button {
       margin-top: 10px;
       width: 100%;
+    }
+
+    .phase small,
+    .team small,
+    .company small,
+    .reference small,
+    .guide small {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.65;
+    }
+
+    .reference strong,
+    .guide strong,
+    .company strong {
+      display: block;
+      font-size: 18px;
+      color: #0d5d57;
+      margin-top: 6px;
+    }
+
+    .deliver {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .check {
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(29, 157, 116, 0.12);
+      color: #0f766e;
+      font-weight: 700;
+      flex: 0 0 auto;
     }
 
     .input-row {
@@ -322,116 +418,49 @@
       color: #0d5d57;
     }
 
-    .phase-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .phase {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(233, 250, 244, 0.92));
-    }
-
-    .phase small,
-    .team small,
-    .company small {
-      display: block;
-      color: var(--muted);
-      margin-top: 6px;
-      line-height: 1.65;
-    }
-
-    .team-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .deliver-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .deliver {
+    .doc-tags {
       display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .check {
-      width: 28px;
-      height: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      background: rgba(29, 157, 116, 0.12);
-      color: #0f766e;
-      font-weight: 700;
-    }
-
-    .company-grid {
-      grid-template-columns: repeat(4, 1fr);
-      margin-top: 12px;
-    }
-
-    .company {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(238, 250, 246, 0.82));
-    }
-
-    .company strong {
-      display: block;
-      font-size: 18px;
-      margin-top: 8px;
-      color: #0d5d57;
-    }
-
-    .panel-dark {
-      background: var(--panel-strong);
-      color: #effff8;
-    }
-
-    .panel-dark h2,
-    .panel-dark .subtext,
-    .panel-dark .rank {
-      color: inherit;
-    }
-
-    .status {
-      display: inline-flex;
       gap: 8px;
-      align-items: center;
-      padding: 8px 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .doc-tag {
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(127, 227, 180, 0.14);
-      color: #d8fff0;
-      border: 1px solid rgba(127, 227, 180, 0.18);
-      font-size: 13px;
+      background: rgba(15, 118, 110, 0.08);
+      color: #0d625c;
+      font-size: 12px;
     }
 
     @media (max-width: 980px) {
       .hero-grid,
+      .hero-stats,
       .prompt-grid,
       .phase-grid,
       .team-grid,
-      .company-grid {
+      .company-grid,
+      .reference-grid,
+      .guide-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero-stats {
-        grid-template-columns: 1fr;
-      }
-
+      .span-8,
       .span-7,
+      .span-6,
       .span-5,
-      .span-4,
-      .span-8 {
+      .span-4 {
         grid-column: span 12;
       }
     }
 
     @media (max-width: 680px) {
-      .bar-row {
-        grid-template-columns: 72px 1fr 62px;
-      }
-
       .deliver-grid {
         grid-template-columns: 1fr;
+      }
+
+      .bar-row {
+        grid-template-columns: 72px 1fr 62px;
       }
     }
   </style>
@@ -439,10 +468,11 @@
 <body>
   <main class="shell">
     <section class="hero">
-      <div class="eyebrow">新能源财报智能体项目 · 6人协作演示页</div>
-      <h1>把财报问答、图表分析和报告生成，做成一个能直接展示的项目首页</h1>
+      <div class="eyebrow">新能源财报智能体项目 · 文档参考增强版</div>
+      <h1>围绕财报样本与赛题数据下载文档，把项目前端优化成更像正式答辩成品的展示页</h1>
       <p>
-        页面围绕新文档中的项目推进方式继续升级：前端不只展示功能，还把 Dify 智能体、数据清洗、团队分工、交付物清单和演示链路整合到同一个 PC 端项目界面里，方便用于比赛展示和小组协作说明。
+        这一版在原有问答、图表和报告基础上，进一步强调“参考资料依据、数据获取路径、字段口径说明、官方来源可信度”。
+        页面不仅展示功能，也能解释这些功能的数据从哪里来、为什么可信、如何整理成项目交付物。
       </p>
       <div class="hero-grid">
         <div class="hero-stats">
@@ -451,31 +481,31 @@
             <strong id="heroCompanies">8 家</strong>
           </div>
           <div class="hero-stat">
-            核心模块
-            <strong>问答 / 图表 / 报告</strong>
+            参考资料
+            <strong>财报样本 + 下载路径</strong>
           </div>
           <div class="hero-stat">
-            项目模式
-            <strong>6 人团队协作</strong>
+            答辩关键词
+            <strong>可追溯 / 可展示 / 可交付</strong>
           </div>
         </div>
         <div class="hero-note">
-          <div class="status">当前状态：前端已适配项目版结构，可继续接入真实 Dify API</div>
+          <div class="status">当前状态：前端已增加“资料依据”和“数据流程”展示层</div>
           <h3>推荐演示顺序</h3>
-          <p>先展示智能问数，再切换运营指标对比，最后生成企业分析简报，底部补充团队分工与交付清单，整体更像完整项目而不是单一页面 Demo。</p>
+          <p>先展示参考资料来源，再进入智能问数、指标对比和报告生成，最后用团队分工与交付清单收尾，整体逻辑会比单纯演示功能更完整。</p>
         </div>
       </div>
     </section>
 
     <section class="grid">
-      <article class="card span-7">
+      <article class="card span-8">
         <div class="card-head">
           <div>
             <h2>智能问数工作台</h2>
-            <div class="subtext">对照文档中的 Dify 智能体组职责，页面强调“问题输入、数据来源、报告入口”三段式体验。</div>
+            <div class="subtext">前端继续围绕 Dify 问答场景设计，强化“问题输入、来源返回、报告跳转”的使用感受。</div>
           </div>
           <div class="chips">
-            <span class="chip">支持营收/净利润/毛利率</span>
+            <span class="chip">支持营收 / 净利润 / 毛利率</span>
             <span class="chip">回答自动带来源</span>
           </div>
         </div>
@@ -486,37 +516,62 @@
         <div id="chatBox" class="output">欢迎进入新能源财报智能体工作台，请输入你的问题。</div>
         <div class="prompt-grid">
           <div class="prompt">
-            <strong>示例 01</strong>
+            <strong>示例问题 01</strong>
             <small>比亚迪和宁德时代毛利率谁更高？</small>
             <button data-question="比亚迪和宁德时代毛利率谁更高？">一键提问</button>
           </div>
           <div class="prompt">
-            <strong>示例 02</strong>
+            <strong>示例问题 02</strong>
             <small>新能源赛道有哪些投资机会？</small>
             <button data-question="新能源赛道有哪些投资机会？">一键提问</button>
           </div>
         </div>
       </article>
 
-      <article class="card span-5 panel-dark">
+      <article class="card span-4 panel-dark">
         <div class="card-head">
           <div>
             <h2>项目推进看板</h2>
-            <div class="subtext">把文档里的两阶段流程做成可视化说明，方便你在答辩时顺带讲团队组织。</div>
+            <div class="subtext">保留项目阶段展示，帮助你把“功能开发”和“交付包装”一并讲清楚。</div>
           </div>
         </div>
         <div id="phaseGrid" class="phase-grid"></div>
+      </article>
+
+      <article class="card span-6">
+        <div class="card-head">
+          <div>
+            <h2>参考资料依据</h2>
+            <div class="subtext">根据你提供的财报 PDF 和赛题数据下载路径 PDF，页面新增文档依据说明，突出“我们不是凭空造数据”。</div>
+          </div>
+          <div class="chips">
+            <span class="chip">用于答辩说明</span>
+            <span class="chip">用于页面可信度展示</span>
+          </div>
+        </div>
+        <div id="referenceGrid" class="reference-grid"></div>
+      </article>
+
+      <article class="card span-6">
+        <div class="card-head">
+          <div>
+            <h2>数据获取与整理流程</h2>
+            <div class="subtext">把“官方入口下载、字段统一、来源追踪、报告输出”做成前端流程卡片，更贴近赛题要求。</div>
+          </div>
+        </div>
+        <div id="guideGrid" class="guide-grid"></div>
       </article>
 
       <article class="card span-8">
         <div class="card-head">
           <div>
             <h2>新能源企业指标对比</h2>
-            <div class="subtext">按文档建议保留营收对比图为主，同时支持切换净利润和毛利率，便于和清洗后的 Excel 数据联动。</div>
+            <div class="subtext">继续保留评审最容易看懂的对比图，同时结合财报字段口径，让图表和问答逻辑保持统一。</div>
           </div>
           <div class="chips">
-            <span class="chip">8 家样本企业</span>
-            <span class="chip">适配 PC 演示</span>
+            <span class="chip">营收（亿元）</span>
+            <span class="chip">净利润（亿元）</span>
+            <span class="chip">毛利率（%）</span>
           </div>
         </div>
         <div class="metric-toolbar">
@@ -538,7 +593,7 @@
         <div class="card-head">
           <div>
             <h2>企业报告生成</h2>
-            <div class="subtext">对应项目文档中的“统一报告模板”，选择企业即可生成投资者简报。</div>
+            <div class="subtext">参考财报样本结构，将指标、行业对比、机会和风险组织成统一模板，便于比赛展示。</div>
           </div>
         </div>
         <div class="input-row">
@@ -552,7 +607,7 @@
         <div class="card-head">
           <div>
             <h2>样本企业覆盖</h2>
-            <div class="subtext">参考文档中的企业清单扩充到 8 家，覆盖动力电池、光伏、储能、锂矿、隔膜等赛道。</div>
+            <div class="subtext">前端继续覆盖动力电池、光伏、储能、锂矿、隔膜等细分方向，呼应项目“新能源行业专属化”定位。</div>
           </div>
         </div>
         <div id="companyGrid" class="company-grid"></div>
@@ -562,7 +617,7 @@
         <div class="card-head">
           <div>
             <h2>团队分工</h2>
-            <div class="subtext">把“智能体组、数据组、前端组”的职责直接挂到页面里，讲项目分工时更直观。</div>
+            <div class="subtext">把智能体组、数据清洗组、前端组的职责继续挂在页面里，方便作为项目说明页的一部分。</div>
           </div>
         </div>
         <div id="teamGrid" class="team-grid"></div>
@@ -572,7 +627,7 @@
         <div class="card-head">
           <div>
             <h2>交付物清单</h2>
-            <div class="subtext">对应第二阶段打包与验收要求，便于做最终材料核对。</div>
+            <div class="subtext">与赛题提交材料保持一致，便于你在最终打包前做勾选核对。</div>
           </div>
         </div>
         <div id="deliverGrid" class="deliver-grid"></div>
@@ -609,7 +664,7 @@
     function renderPhases(phases) {
       const root = document.getElementById("phaseGrid");
       root.innerHTML = "";
-      phases.forEach((phase) => {
+      phases.forEach(function (phase) {
         const node = document.createElement("div");
         node.className = "phase";
         node.innerHTML =
@@ -624,7 +679,7 @@
     function renderTeams(teams) {
       const root = document.getElementById("teamGrid");
       root.innerHTML = "";
-      teams.forEach((team) => {
+      teams.forEach(function (team) {
         const node = document.createElement("div");
         node.className = "team";
         node.innerHTML =
@@ -638,7 +693,7 @@
     function renderDeliverables(deliverables) {
       const root = document.getElementById("deliverGrid");
       root.innerHTML = "";
-      deliverables.forEach((item) => {
+      deliverables.forEach(function (item) {
         const node = document.createElement("div");
         node.className = "deliver";
         node.innerHTML = "<span class='check'>√</span><div>" + item + "</div>";
@@ -654,7 +709,7 @@
       select.innerHTML = "";
       grid.innerHTML = "";
 
-      items.forEach((item) => {
+      items.forEach(function (item) {
         const option = document.createElement("option");
         option.value = item.name;
         option.textContent = item.name;
@@ -671,6 +726,45 @@
       });
     }
 
+    function renderReferences(documents) {
+      const root = document.getElementById("referenceGrid");
+      root.innerHTML = "";
+      documents.forEach(function (doc) {
+        const node = document.createElement("div");
+        node.className = "reference";
+        node.innerHTML =
+          "<div>" + doc.title + "</div>" +
+          "<strong>" + doc.fileName + "</strong>" +
+          "<small>" + doc.summary + "</small>" +
+          "<small>页数：" + doc.pageCount + " 页</small>";
+
+        const tags = document.createElement("div");
+        tags.className = "doc-tags";
+        doc.usage.forEach(function (item) {
+          const tag = document.createElement("span");
+          tag.className = "doc-tag";
+          tag.textContent = item;
+          tags.appendChild(tag);
+        });
+
+        node.appendChild(tags);
+        root.appendChild(node);
+      });
+    }
+
+    function renderGuide(guide) {
+      const root = document.getElementById("guideGrid");
+      root.innerHTML = "";
+      guide.forEach(function (item) {
+        const node = document.createElement("div");
+        node.className = "guide";
+        node.innerHTML =
+          "<div>" + item.step + "</div>" +
+          "<strong>" + item.detail + "</strong>";
+        root.appendChild(node);
+      });
+    }
+
     async function loadOverview() {
       await requestJson("/api/overview");
     }
@@ -680,6 +774,12 @@
       renderPhases(data.phases);
       renderTeams(data.teams);
       renderDeliverables(data.deliverables);
+    }
+
+    async function loadReferences() {
+      const data = await requestJson("/api/reference-docs");
+      renderReferences(data.documents);
+      renderGuide(data.guide);
     }
 
     async function loadCompanies() {
@@ -699,9 +799,9 @@
       const root = document.getElementById("bars");
       root.innerHTML = "";
 
-      const values = data.items.map((item) => item.value);
+      const values = data.items.map(function (item) { return item.value; });
       const maxValue = Math.max.apply(null, values.concat([1]));
-      data.items.forEach((item) => {
+      data.items.forEach(function (item) {
         root.appendChild(createBarRow(item, maxValue));
       });
 
@@ -764,7 +864,13 @@
       });
     });
 
-    Promise.all([loadOverview(), loadBoard(), loadCompanies(), loadMetrics()]).catch(function (error) {
+    Promise.all([
+      loadOverview(),
+      loadBoard(),
+      loadReferences(),
+      loadCompanies(),
+      loadMetrics()
+    ]).catch(function (error) {
       document.getElementById("chatBox").textContent = "页面初始化失败：" + error.message;
     });
   </script>

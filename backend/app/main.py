@@ -70,6 +70,42 @@ DELIVERABLES: list[str] = [
     "用户使用手册",
 ]
 
+REFERENCE_DOCS: list[dict[str, Any]] = [
+    {
+        "title": "企业财报样本",
+        "fileName": "H2_AN202510301771926086_1.pdf",
+        "summary": "作为财报结构参考，适合提炼营收、净利润、毛利率、主营业务和风险提示等前端展示字段。",
+        "pageCount": 21,
+        "usage": ["报告生成模块", "数据来源标注", "企业详情展示"],
+    },
+    {
+        "title": "赛题数据下载路径文档",
+        "fileName": "赛题相关数据下载路径文档.pdf",
+        "summary": "用于明确赛题要求的数据获取入口，前端可突出官方数据来源、下载路径和使用说明。",
+        "pageCount": 1,
+        "usage": ["数据来源说明", "官方入口指引", "交付材料说明"],
+    },
+]
+
+DATA_GUIDE: list[dict[str, str]] = [
+    {
+        "step": "01 官方下载",
+        "detail": "优先使用赛题给定路径和官方披露平台，避免来源混杂。",
+    },
+    {
+        "step": "02 字段统一",
+        "detail": "统一营收、净利润、毛利率、年份和企业名称口径，便于问答与图表共用。",
+    },
+    {
+        "step": "03 来源追踪",
+        "detail": "每条关键数据保留财报页码或知识库来源标记，保证回答可回溯。",
+    },
+    {
+        "step": "04 报告输出",
+        "detail": "将核心指标、行业对比、风险与机会整理成固定模板，方便评审快速理解。",
+    },
+]
+
 SOURCE_MAP: dict[str, str] = {
     item["name"]: f"数据来源：{item['name']} 年度财报与知识库标注（演示数据）"
     for item in COMPANY_DATA
@@ -185,6 +221,11 @@ def get_metrics(metric: str = "revenue") -> dict[str, Any]:
 @app.get("/api/project-board")
 def get_project_board() -> dict[str, Any]:
     return {"phases": PROJECT_PHASES, "teams": TEAM_BOARD, "deliverables": DELIVERABLES}
+
+
+@app.get("/api/reference-docs")
+def get_reference_docs() -> dict[str, Any]:
+    return {"documents": REFERENCE_DOCS, "guide": DATA_GUIDE}
 
 
 @app.post("/api/ask")
