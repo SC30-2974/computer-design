@@ -160,7 +160,7 @@ class ReportRequest(BaseModel):
 
 
 def source_text(company_name: str) -> str:
-    return f"数据来源：{company_name}年度财报与已整理知识库（演示数据）"
+    return f"数据来源：{company_name}年度财报与已整理知识库（示例数据）"
 
 
 def find_company(name: str) -> dict[str, Any] | None:
@@ -198,12 +198,12 @@ def answer_question(question: str) -> str:
     if "毛利率" in q and "比亚迪" in q and "宁德时代" in q:
         return (
             "毛利率对比：宁德时代 22.1%，比亚迪 18.7%，宁德时代更高。\n"
-            "数据来源：新能源企业财报对比（演示数据）"
+            "数据来源：新能源企业财报对比（示例数据）"
         )
     if "趋势" in q or "机会" in q:
         return (
             "新能源行业当前关注点包括储能建设、海外市场扩张、光伏与锂电产业链协同，以及原材料价格变化带来的利润弹性。\n"
-            "数据来源：行业研报摘要与已整理知识库（演示数据）"
+            "数据来源：行业研报摘要与已整理知识库（示例数据）"
         )
 
     return (

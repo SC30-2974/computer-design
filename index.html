@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>新能源投资者智能体系统演示</title>
+  <title>新能源投资者智能体系统</title>
   <style>
     :root {
       --bg-0: #eef6f3;
@@ -262,8 +262,8 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1>新能源投资者智能体系统（竞赛演示版）</h1>
-      <p>面向 2026 计算机设计大赛需求，聚焦“新能源行业 + 投资者用户”，实现智能问数、运营指标分析、定制报告生成三大核心功能，支持两天冲刺快速展示。</p>
+      <h1>新能源投资者智能体系统</h1>
+      <p>聚焦“新能源行业 + 投资者用户”，实现智能问数、运营指标分析、定制报告生成三大核心功能，支持快速展示与交互体验。</p>
       <div class="badge-row">
         <span class="badge">核心用户：投资者</span>
         <span class="badge">核心行业：新能源</span>
@@ -284,7 +284,7 @@
             <b>财报数据 + 行业研报 + 宏观指标</b>
           </div>
           <div class="metric">
-            演示目标
+            使用目标
             <b>5 分钟内完整走通评审场景</b>
           </div>
         </div>
@@ -361,7 +361,7 @@
       if (q.includes("机会")) {
         return "新能源投资机会：储能需求持续增长、海外市场拓展、政策推动新型电力系统建设。\n数据来源：行业研报摘要（示例）";
       }
-      return "已收到问题。演示版建议接入 Dify API 获取真实问答。\n当前可回答：净利润查询、企业毛利率对比、行业机会提示。";
+        return "已收到问题。建议接入 Dify API 获取真实问答。\n当前可回答：净利润查询、企业毛利率对比、行业机会提示。";
     }
 
     function genReport(company) {
@@ -377,7 +377,7 @@
     function drawChart(metric) {
       const el = document.getElementById("chart");
       if (!window.echarts) {
-        el.innerHTML = "<div style='padding:16px;color:#355c59'>图表库加载失败，请联网后重试（演示仍可继续）。</div>";
+        el.innerHTML = "<div style='padding:16px;color:#355c59'>图表库加载失败，请联网后重试。</div>";
         return;
       }
 
