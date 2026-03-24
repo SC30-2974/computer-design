@@ -207,10 +207,8 @@
     .chips,
     .module-grid,
     .prompt-grid,
-    .reference-grid,
-    .guide-grid,
-    .company-grid,
-    .detail-grid {
+      .company-grid,
+      .detail-grid {
       display: grid;
       gap: 12px;
     }
@@ -234,13 +232,8 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .prompt-grid,
-    .reference-grid {
+    .prompt-grid {
       grid-template-columns: repeat(2, 1fr);
-    }
-
-    .guide-grid {
-      grid-template-columns: repeat(4, 1fr);
     }
 
     .company-grid {
@@ -252,18 +245,12 @@
     }
 
     .panel,
-    .reference,
-    .guide,
     .company,
     .metric-box {
       padding: 14px;
       border-radius: 18px;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.78);
-    }
-
-    .guide {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(233, 250, 244, 0.95));
     }
 
     .input-row {
@@ -360,8 +347,6 @@
     }
 
     .company strong,
-    .reference strong,
-    .guide strong,
     .metric-box strong {
       display: block;
       margin-top: 6px;
@@ -370,8 +355,6 @@
     }
 
     .company small,
-    .reference small,
-    .guide small,
     .metric-box small,
     .panel small {
       display: block;
@@ -380,28 +363,11 @@
       color: var(--muted);
     }
 
-    .doc-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .doc-tag {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(15, 118, 110, 0.08);
-      color: #0d625c;
-      font-size: 12px;
-    }
-
     @media (max-width: 980px) {
       .hero-grid,
       .hero-stats,
       .module-grid,
       .prompt-grid,
-      .reference-grid,
-      .guide-grid,
       .company-grid,
       .detail-grid {
         grid-template-columns: 1fr;
@@ -454,17 +420,6 @@
           </div>
         </div>
         <div id="moduleGrid" class="module-grid"></div>
-      </article>
-
-      <article class="card span-6 card-dark">
-        <div class="card-head">
-          <div>
-            <h2>资料与数据流程</h2>
-            <div class="subtext">保留资料依据和数据处理流程，用来解释页面中的数据从哪里来、如何整理。</div>
-          </div>
-        </div>
-        <div id="referenceGrid" class="reference-grid"></div>
-        <div id="guideGrid" class="guide-grid" style="margin-top:12px"></div>
       </article>
 
       <article class="card span-8">
@@ -595,41 +550,6 @@
       });
     }
 
-    function renderReferences(documents) {
-      const root = document.getElementById("referenceGrid");
-      root.innerHTML = "";
-      documents.forEach(function (doc) {
-        const node = document.createElement("div");
-        node.className = "reference";
-        node.innerHTML =
-          "<div>资料</div>" +
-          "<strong>" + doc.title + "</strong>" +
-          "<small>文件：" + doc.fileName + "</small>" +
-          "<small>" + doc.summary + "</small>";
-        const tags = document.createElement("div");
-        tags.className = "doc-tags";
-        doc.usage.forEach(function (usage) {
-          const tag = document.createElement("span");
-          tag.className = "doc-tag";
-          tag.textContent = usage;
-          tags.appendChild(tag);
-        });
-        node.appendChild(tags);
-        root.appendChild(node);
-      });
-    }
-
-    function renderGuide(items) {
-      const root = document.getElementById("guideGrid");
-      root.innerHTML = "";
-      items.forEach(function (item) {
-        const node = document.createElement("div");
-        node.className = "guide";
-        node.innerHTML = "<div>" + item.step + "</div><strong>" + item.detail + "</strong>";
-        root.appendChild(node);
-      });
-    }
-
     function renderSelectOptions(select, items, includeAllText) {
       select.innerHTML = "";
       if (includeAllText) {
@@ -701,12 +621,6 @@
       document.getElementById("heroSectors").textContent = data.sectorCount + " 个";
       document.getElementById("heroModules").textContent = data.moduleCount + " 个";
       renderModules(data.modules);
-    }
-
-    async function loadBoard() {
-      const data = await requestJson("/api/system-board");
-      renderReferences(data.documents);
-      renderGuide(data.guide);
     }
 
     async function loadSectors() {
@@ -835,7 +749,6 @@
 
     Promise.all([
       loadOverview(),
-      loadBoard(),
       loadSectors(),
       loadCompanies(),
       loadMetrics()
