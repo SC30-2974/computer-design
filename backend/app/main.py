@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
@@ -30,92 +30,95 @@ app.add_middleware(
 
 COMPANY_DATA: list[dict[str, Any]] = [
     {
-        "name": "宁德时代",
-        "sector": "动力电池",
-        "revenue": 4100,
-        "profit": 530,
-        "margin": 22.1,
+        "name": "比亚迪",
+        "sector": "整车+电池+光伏",
+        "revenue": 5662.66,
+        "profit": 233.33,
+        "margin": 17.9,
         "year": 2025,
-        "summary": "动力电池龙头，储能与海外业务协同明显。",
-        "opportunity": "储能需求增长和全球化扩张带来增量空间。",
-        "risk": "原材料价格波动和行业竞争可能压缩利润率。",
+        "period": "2025 年前三季度",
+        "summary": "主营新能源汽车、手机部件及组装、二次充电电池与光伏业务，汽车电动化与智能化仍是核心增长主线。",
+        "opportunity": "新能源汽车、电池和储能协同推进，全球化与智能化布局仍有望继续释放增量。",
+        "risk": "前三季度归母净利润同比下降 7.55%，行业价格竞争与海外经营环境变化仍会影响盈利表现。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中比亚迪股份有限公司 2025 年第三季度报告，第 210-218 页。",
     },
     {
-        "name": "比亚迪",
-        "sector": "整车+电池",
-        "revenue": 6200,
-        "profit": 420,
-        "margin": 18.7,
+        "name": "恩捷股份",
+        "sector": "锂电隔膜",
+        "revenue": 95.43,
+        "profit": -0.86,
+        "margin": 15.9,
         "year": 2025,
-        "summary": "整车与电池双轮驱动，产业链一体化优势明显。",
-        "opportunity": "出口和高端车型放量增强增长弹性。",
-        "risk": "价格竞争加剧可能影响整车盈利能力。",
+        "period": "2025 年前三季度",
+        "summary": "核心产品覆盖锂电池隔离膜、BOPP 薄膜和包装印刷品，隔膜业务覆盖动力、消费和储能电池客户。",
+        "opportunity": "全球新能源与储能需求仍在增长，隔膜龙头地位和海外客户覆盖有助于稳固市场份额。",
+        "risk": "隔膜行业竞争加剧、价格下行，前三季度归母净利润转负，盈利修复仍需观察。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中云南恩捷新材料股份有限公司 2025 年第三季度报告，第 381-391 页。",
     },
     {
         "name": "隆基绿能",
-        "sector": "光伏",
-        "revenue": 1180,
-        "profit": 94,
-        "margin": 15.2,
+        "sector": "光伏组件",
+        "revenue": 509.15,
+        "profit": -34.03,
+        "margin": 1.2,
         "year": 2025,
-        "summary": "聚焦光伏主产业链，组件与技术路线能力突出。",
-        "opportunity": "高效组件和海外市场恢复带动收入改善。",
-        "risk": "光伏产业价格波动与阶段性供需错配明显。",
+        "period": "2025 年前三季度",
+        "summary": "主营光伏硅片、电池组件及解决方案，处于光伏制造与全球化布局核心环节。",
+        "opportunity": "供给侧改革与技术创新若持续推进，海外新兴市场和高效产品有望带来盈利修复空间。",
+        "risk": "光伏供需失衡、低价竞争和贸易壁垒仍在，前三季度仍处亏损状态。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中隆基绿能科技股份有限公司 2025 年第三季度报告，第 645-656 页。",
+    },
+    {
+        "name": "宁德时代",
+        "sector": "动力电池+储能",
+        "revenue": 2830.72,
+        "profit": 490.34,
+        "margin": 25.3,
+        "year": 2025,
+        "period": "2025 年前三季度",
+        "summary": "主营动力电池与储能电池，具备从材料、电池系统到回收的全链条研发与产业化能力。",
+        "opportunity": "动力电池全球市占率和储能电池产量继续领先，动力与储能双轮驱动仍具扩张空间。",
+        "risk": "产品价格与汇率波动仍是经营管理重点，全球化扩张下对成本与外部政策的敏感度较高。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中宁德时代新能源科技股份有限公司 2025 年第三季度报告，第 850-858 页。",
+    },
+    {
+        "name": "阳光电源",
+        "sector": "逆变器+储能",
+        "revenue": 664.02,
+        "profit": 118.81,
+        "margin": 34.9,
+        "year": 2025,
+        "period": "2025 年前三季度",
+        "summary": "聚焦光伏逆变器、储能系统、风电变流及氢能等清洁能源装备，并提供全生命周期解决方案。",
+        "opportunity": "全球光伏与储能装机保持高增，逆变器和储能系统需求仍在扩张。",
+        "risk": "市场竞争加剧带来毛利率下滑风险，海外政策和项目交付节奏也会影响业绩兑现。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中阳光电源股份有限公司 2025 年第三季度报告，第 1066-1074 页。",
+    },
+    {
+        "name": "亿纬锂能",
+        "sector": "消费+动力+储能电池",
+        "revenue": 450.02,
+        "profit": 28.16,
+        "margin": 16.0,
+        "year": 2025,
+        "period": "2025 年前三季度",
+        "summary": "主营消费电池、动力电池和储能电池，覆盖智慧生活、绿色交通和能源转型等多元场景。",
+        "opportunity": "满产满销与市占率提升推动前三季度营收增长 32.17%，储能和动力业务仍有扩张空间。",
+        "risk": "前三季度归母净利润同比下降 11.70%，仍需继续消化费用与减值等盈利扰动。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中惠州亿纬锂能股份有限公司 2025 年第三季度报告，第 1286-1295 页。",
     },
     {
         "name": "通威股份",
         "sector": "光伏+硅料",
-        "revenue": 1390,
-        "profit": 102,
-        "margin": 16.8,
+        "revenue": 646.0,
+        "profit": -52.7,
+        "margin": 2.7,
         "year": 2025,
-        "summary": "硅料与电池片协同布局，具备成本优势。",
-        "opportunity": "一体化布局有助于对冲单环节波动。",
-        "risk": "硅料价格下行会拖累整体盈利水平。",
-    },
-    {
-        "name": "阳光电源",
-        "sector": "储能+逆变器",
-        "revenue": 980,
-        "profit": 87,
-        "margin": 21.4,
-        "year": 2025,
-        "summary": "储能系统和逆变器业务布局完整，海外客户基础较好。",
-        "opportunity": "海外储能建设持续推进，系统集成需求提升。",
-        "risk": "海外政策变化与项目交付节奏可能影响业绩确认。",
-    },
-    {
-        "name": "天齐锂业",
-        "sector": "锂矿资源",
-        "revenue": 560,
-        "profit": 63,
-        "margin": 27.6,
-        "year": 2025,
-        "summary": "上游锂资源企业，对锂盐价格变化较为敏感。",
-        "opportunity": "行业复苏时资源端盈利弹性较强。",
-        "risk": "锂价波动会直接影响收入和利润表现。",
-    },
-    {
-        "name": "恩捷股份",
-        "sector": "隔膜",
-        "revenue": 214,
-        "profit": 31,
-        "margin": 29.4,
-        "year": 2025,
-        "summary": "锂电池隔膜环节代表企业，盈利质量较高。",
-        "opportunity": "中高端隔膜需求稳定，有助于维持产品结构优势。",
-        "risk": "新增产能释放后，价格压力可能逐步传导。",
-    },
-    {
-        "name": "亿纬锂能",
-        "sector": "动力+消费电池",
-        "revenue": 488,
-        "profit": 46,
-        "margin": 19.1,
-        "year": 2025,
-        "summary": "动力与消费电池并行发展，客户结构较为均衡。",
-        "opportunity": "新客户开拓与储能产品扩展值得关注。",
-        "risk": "多业务线扩张下，资本开支和执行压力较大。",
+        "period": "2025 年前三季度",
+        "summary": "以农业与新能源双主业协同发展，光伏产业链覆盖硅料、电池等关键环节。",
+        "opportunity": "报告指出产业链价格在本报告期内已有回升，单季盈利指标出现持续改善。",
+        "risk": "光伏主产业仍处低景气区间，前三季度归母净利润为负，行业波动对业绩影响明显。",
+        "source": "《各企业2025年财报数据（一季度至三季度）》中通威股份有限公司 2025 年第三季度报告，第 1503-1512 页。",
     },
 ]
 
@@ -159,8 +162,11 @@ class ReportRequest(BaseModel):
     company: str
 
 
-def source_text(company_name: str) -> str:
-    return f"数据来源：{company_name}年度财报与已整理知识库（示例数据）"
+def source_text(company: dict[str, Any]) -> str:
+    return (
+        f"数据来源：{company['source']} "
+        "毛利率优先采用报告披露口径，未直接披露时按前三季度营业收入与营业成本测算。"
+    )
 
 
 def find_company(name: str) -> dict[str, Any] | None:
@@ -184,30 +190,30 @@ def answer_question(question: str) -> str:
     matched = next((item for item in COMPANY_DATA if item["name"] in q), None)
 
     if matched and "净利润" in q:
-        return f"{matched['name']}净利润约 {matched['profit']} 亿元。\n{source_text(matched['name'])}"
+        return f"{matched['name']}{matched['period']}归母净利润约 {matched['profit']} 亿元。\n{source_text(matched)}"
     if matched and "营收" in q:
-        return f"{matched['name']}营收约 {matched['revenue']} 亿元。\n{source_text(matched['name'])}"
+        return f"{matched['name']}{matched['period']}营业收入约 {matched['revenue']} 亿元。\n{source_text(matched)}"
     if matched and "毛利率" in q:
-        return f"{matched['name']}毛利率约 {matched['margin']}%。\n{source_text(matched['name'])}"
+        return f"{matched['name']}{matched['period']}毛利率约 {matched['margin']}%。\n{source_text(matched)}"
     if matched and ("风险" in q or "机会" in q):
         return (
             f"{matched['name']}的潜在机会：{matched['opportunity']}\n"
             f"{matched['name']}的主要风险：{matched['risk']}\n"
-            f"{source_text(matched['name'])}"
+            f"{source_text(matched)}"
         )
     if "毛利率" in q and "比亚迪" in q and "宁德时代" in q:
         return (
-            "毛利率对比：宁德时代 22.1%，比亚迪 18.7%，宁德时代更高。\n"
-            "数据来源：新能源企业财报对比（示例数据）"
+            "毛利率对比：宁德时代 25.3%，比亚迪 17.9%，宁德时代更高。\n"
+            "数据来源：《各企业2025年财报数据（一季度至三季度）》对应企业三季报。"
         )
     if "趋势" in q or "机会" in q:
         return (
-            "新能源行业当前关注点包括储能建设、海外市场扩张、光伏与锂电产业链协同，以及原材料价格变化带来的利润弹性。\n"
-            "数据来源：行业研报摘要与已整理知识库（示例数据）"
+            "从已整理的三季报看，动力电池与储能企业仍保持较强增长韧性，光伏制造环节则继续承受供需失衡与价格竞争压力。\n"
+            "数据来源：《各企业2025年财报数据（一季度至三季度）》对应企业三季报。"
         )
 
     return (
-        "当前支持企业营收、净利润、毛利率、企业机会与风险等问题。\n"
+        "当前支持企业前三季度营收、净利润、毛利率、企业机会与风险等问题。\n"
         "你可以直接提问：宁德时代净利润是多少？ 阳光电源有哪些风险？"
     )
 
@@ -223,12 +229,12 @@ def make_report(company_name: str) -> str:
 
     return (
         f"{company_name}分析简报\n"
-        f"1. 核心指标：营收约 {company['revenue']} 亿元，净利润约 {company['profit']} 亿元，毛利率约 {company['margin']}%。\n"
+        f"1. 核心指标：{company['period']}营业收入约 {company['revenue']} 亿元，归母净利润约 {company['profit']} 亿元，毛利率约 {company['margin']}%。\n"
         f"2. 行业定位：企业位于{company['sector']}方向，毛利率较样本均值{gap_text} {abs(margin_gap)} 个百分点。\n"
         f"3. 经营摘要：{company['summary']}\n"
         f"4. 潜在机会：{company['opportunity']}\n"
         f"5. 主要风险：{company['risk']}\n"
-        f"{source_text(company_name)}"
+        f"{source_text(company)}"
     )
 
 
