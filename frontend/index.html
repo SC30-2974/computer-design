@@ -224,6 +224,21 @@
       font-size: 14px;
     }
 
+    .embed-shell {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .embed-shell iframe {
+      display: block;
+      width: 100%;
+      min-height: 700px;
+      border: 0;
+    }
+
     .metric-meta {
       color: var(--muted);
       font-size: 13px;
@@ -312,26 +327,24 @@
         <div class="card-head">
           <div>
             <h2>智能问答</h2>
-            <div class="subtext">支持企业营收、净利润、毛利率、机会和风险相关问题，并返回来源说明。</div>
+            <div class="subtext">在页面内直接使用在线智能体提问；如果嵌入窗口加载受限，也可以新窗口打开单独使用。</div>
           </div>
           <div class="chips">
-            <span class="chip">Enter 提交</span>
+            <span class="chip">在线聊天</span>
+            <span class="chip">支持麦克风</span>
           </div>
         </div>
         <div class="input-row">
-          <input id="questionInput" placeholder="例如：阳光电源有哪些风险？" />
-          <button id="askBtn">提交问题</button>
+          <a href="https://udify.app/chat/v2rkJLTx9Z9hWdS3" target="_blank" rel="noopener noreferrer">
+            <button type="button">新窗口打开</button>
+          </a>
         </div>
-        <div id="chatBox" class="output">欢迎使用新能源财报智能体，请输入你的问题。</div>
-        <div class="prompt-grid" style="margin-top:16px">
-          <div class="panel">
-            <strong>宁德时代净利润是多少？</strong>
-            <button class="btn-secondary" data-question="宁德时代净利润是多少？" style="margin-top:12px; width:100%">一键提问</button>
-          </div>
-          <div class="panel">
-            <strong>阳光电源有哪些风险？</strong>
-            <button class="btn-secondary" data-question="阳光电源有哪些风险？" style="margin-top:12px; width:100%">一键提问</button>
-          </div>
+        <div class="embed-shell">
+          <iframe
+            src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
+            title="新能源财报智能体"
+            allow="microphone">
+          </iframe>
         </div>
       </article>
 
