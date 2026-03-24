@@ -224,6 +224,21 @@
       font-size: 14px;
     }
 
+    .embed-shell {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .embed-shell iframe {
+      display: block;
+      width: 100%;
+      min-height: 700px;
+      border: 0;
+    }
+
     .metric-meta {
       color: var(--muted);
       font-size: 13px;
@@ -312,26 +327,21 @@
         <div class="card-head">
           <div>
             <h2>智能问答</h2>
-            <div class="subtext">支持企业营收、净利润、毛利率、机会和风险相关问题，并返回来源说明。</div>
+            <div class="subtext">直接在页面内使用在线智能体提问，无需跳转到其他界面。</div>
           </div>
           <div class="chips">
-            <span class="chip">Enter 提交</span>
+            <span class="chip">Dify 嵌入</span>
+            <span class="chip">支持麦克风</span>
           </div>
         </div>
-        <div class="input-row">
-          <input id="questionInput" placeholder="例如：阳光电源有哪些风险？" />
-          <button id="askBtn">提交问题</button>
-        </div>
-        <div id="chatBox" class="output">欢迎使用新能源财报智能体，请输入你的问题。</div>
-        <div class="prompt-grid" style="margin-top:16px">
-          <div class="panel">
-            <strong>宁德时代净利润是多少？</strong>
-            <button class="btn-secondary" data-question="宁德时代净利润是多少？" style="margin-top:12px; width:100%">一键提问</button>
-          </div>
-          <div class="panel">
-            <strong>阳光电源有哪些风险？</strong>
-            <button class="btn-secondary" data-question="阳光电源有哪些风险？" style="margin-top:12px; width:100%">一键提问</button>
-          </div>
+        <div class="embed-shell">
+          <iframe
+            src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
+            title="新能源财报智能体"
+            style="width: 100%; height: 100%; min-height: 700px"
+            frameborder="0"
+            allow="microphone">
+          </iframe>
         </div>
       </article>
 
@@ -698,21 +708,6 @@
       if(meta) meta.textContent = "当前展示：" + labels[metric] + (sector ? " · " + sector : " · 全部赛道");
     }
 
-    async function askQuestion(value) {
-      const question = typeof value === "string" ? value : document.getElementById("questionInput").value.trim();
-      if (!question) {
-        document.getElementById("chatBox").textContent = "请输入问题内容。";
-        return;
-      }
-      document.getElementById("questionInput").value = question;
-      document.getElementById("chatBox").textContent = "思考中...";
-      const data = await requestJson("/api/ask", {
-        method: "POST",
-        body: JSON.stringify({ question: question })
-      });
-      document.getElementById("chatBox").textContent = data.answer;
-    }
-
     async function generateReport() {
       const company = document.getElementById("companySelect").value;
       document.getElementById("reportBox").textContent = "生成中，请稍候...";
@@ -724,28 +719,6 @@
     }
 
     // 事件绑定
-    document.getElementById("askBtn")?.addEventListener("click", function () {
-      askQuestion().catch(function (error) {
-        document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-      });
-    });
-
-    document.getElementById("questionInput")?.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        askQuestion().catch(function (error) {
-          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-        });
-      }
-    });
-
-    document.querySelectorAll("[data-question]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        askQuestion(button.getAttribute("data-question")).catch(function (error) {
-          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-        });
-      });
-    });
-
     document.getElementById("searchBtn")?.addEventListener("click", function () {
       loadCompanies().catch(function (error) {
         document.getElementById("companyGrid").innerHTML = "<div class='panel'>筛选失败：" + error.message + "</div>";
@@ -788,8 +761,8 @@
       loadCompanies(),
       loadMetrics()
     ]).catch(function (error) {
-      const cb = document.getElementById("chatBox");
-      if(cb) cb.textContent = "页面初始化失败：" + error.message;
+      const box = document.getElementById("reportBox");
+      if(box) box.textContent = "页面初始化失败：" + error.message;
     });
   </script>
 </body>

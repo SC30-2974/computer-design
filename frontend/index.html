@@ -327,22 +327,19 @@
         <div class="card-head">
           <div>
             <h2>智能问答</h2>
-            <div class="subtext">在页面内直接使用在线智能体提问；如果嵌入窗口加载受限，也可以新窗口打开单独使用。</div>
+            <div class="subtext">直接在页面内使用在线智能体提问，无需跳转到其他界面。</div>
           </div>
           <div class="chips">
-            <span class="chip">在线聊天</span>
+            <span class="chip">Dify 嵌入</span>
             <span class="chip">支持麦克风</span>
           </div>
-        </div>
-        <div class="input-row">
-          <a href="https://udify.app/chat/v2rkJLTx9Z9hWdS3" target="_blank" rel="noopener noreferrer">
-            <button type="button">新窗口打开</button>
-          </a>
         </div>
         <div class="embed-shell">
           <iframe
             src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
             title="新能源财报智能体"
+            style="width: 100%; height: 100%; min-height: 700px"
+            frameborder="0"
             allow="microphone">
           </iframe>
         </div>
@@ -711,21 +708,6 @@
       if(meta) meta.textContent = "当前展示：" + labels[metric] + (sector ? " · " + sector : " · 全部赛道");
     }
 
-    async function askQuestion(value) {
-      const question = typeof value === "string" ? value : document.getElementById("questionInput").value.trim();
-      if (!question) {
-        document.getElementById("chatBox").textContent = "请输入问题内容。";
-        return;
-      }
-      document.getElementById("questionInput").value = question;
-      document.getElementById("chatBox").textContent = "思考中...";
-      const data = await requestJson("/api/ask", {
-        method: "POST",
-        body: JSON.stringify({ question: question })
-      });
-      document.getElementById("chatBox").textContent = data.answer;
-    }
-
     async function generateReport() {
       const company = document.getElementById("companySelect").value;
       document.getElementById("reportBox").textContent = "生成中，请稍候...";
@@ -737,28 +719,6 @@
     }
 
     // 事件绑定
-    document.getElementById("askBtn")?.addEventListener("click", function () {
-      askQuestion().catch(function (error) {
-        document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-      });
-    });
-
-    document.getElementById("questionInput")?.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        askQuestion().catch(function (error) {
-          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-        });
-      }
-    });
-
-    document.querySelectorAll("[data-question]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        askQuestion(button.getAttribute("data-question")).catch(function (error) {
-          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
-        });
-      });
-    });
-
     document.getElementById("searchBtn")?.addEventListener("click", function () {
       loadCompanies().catch(function (error) {
         document.getElementById("companyGrid").innerHTML = "<div class='panel'>筛选失败：" + error.message + "</div>";
@@ -801,8 +761,8 @@
       loadCompanies(),
       loadMetrics()
     ]).catch(function (error) {
-      const cb = document.getElementById("chatBox");
-      if(cb) cb.textContent = "页面初始化失败：" + error.message;
+      const box = document.getElementById("reportBox");
+      if(box) box.textContent = "页面初始化失败：" + error.message;
     });
   </script>
 </body>
