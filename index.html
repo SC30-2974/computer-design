@@ -3,25 +3,794 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>页面跳转中</title>
-  <meta http-equiv="refresh" content="0; url=./frontend/index.html" />
+  <title>新能源财报智能体系统</title>
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: #f4f7f6;
-      color: #334155;
+    :root {
+      /* 现代清爽的配色方案 */
+      --bg: #f4f7f6;
+      --panel: #ffffff;
+      --text-dark: #1e293b;
+      --text: #334155;
+      --muted: #64748b;
+      --brand: #0f766e;
+      --brand-hover: #115e59;
+      --brand-light: #ccfbf1;
+      --line: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      --radius: 16px;
     }
 
-    a {
-      color: #0f766e;
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1280px, 94vw);
+      margin: 0 auto 60px;
+    }
+
+    /* 优化后的顶部导航/标题 */
+    .app-header {
+      padding: 36px 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: 0.5px;
+    }
+
+    .app-header .badge {
+      padding: 6px 12px;
+      background: var(--brand-light);
+      color: var(--brand);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+
+    .chips, .prompt-grid, .company-grid, .detail-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .prompt-grid { grid-template-columns: repeat(2, 1fr); }
+    .company-grid { grid-template-columns: repeat(3, 1fr); }
+    .detail-grid { grid-template-columns: repeat(1, 1fr); gap: 12px; }
+
+    .panel, .company {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      transition: border-color 0.2s;
+    }
+
+    .company {
+      cursor: pointer;
+    }
+
+    .company:hover {
+      border-color: var(--brand);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    input, select, button {
+      font: inherit;
+      outline: none;
+    }
+
+    input, select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fafafa;
+      color: var(--text-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-light);
+      background: #fff;
+    }
+
+    input { flex: 1 1 200px; }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      color: white;
+      background: var(--brand);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background: var(--brand-hover);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* 次级按钮样式用于示例问题 */
+    .btn-secondary {
+      background: white;
+      color: var(--brand);
+      border: 1px solid var(--brand);
+    }
+    .btn-secondary:hover {
+      background: var(--brand-light);
+    }
+
+    .output {
+      margin-top: 16px;
+      min-height: 120px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      white-space: pre-wrap;
+      line-height: 1.7;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .metric-meta {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .bars {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 80px;
+      gap: 16px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .track {
+      height: 16px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--brand);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .company strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+
+    .company div {
+      font-size: 12px;
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .company small, .panel small {
+      display: block;
+      margin-top: 6px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel div {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+
+    .panel strong {
+      color: var(--text-dark);
+      font-size: 15px;
+    }
+
+    @media (max-width: 1024px) {
+      .span-8, .span-7, .span-6, .span-5, .span-4 { grid-column: span 12; }
+    }
+    @media (max-width: 768px) {
+      .prompt-grid, .company-grid { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 80px 1fr 60px; }
+      .app-header { flex-direction: column; align-items: flex-start; gap: 12px; }
     }
   </style>
 </head>
 <body>
-  <p>正在跳转到统一前端入口：<a href="./frontend/index.html">frontend/index.html</a></p>
+  <main class="shell">
+    <header class="app-header">
+      <h1>新能源财报智能体系统</h1>
+      <div class="badge">优化版</div>
+    </header>
+
+    <section class="grid">
+      <article class="card span-8">
+        <div class="card-head">
+          <div>
+            <h2>智能问答</h2>
+            <div class="subtext">支持企业营收、净利润、毛利率、机会和风险相关问题，并返回来源说明。</div>
+          </div>
+          <div class="chips">
+            <span class="chip">Enter 提交</span>
+          </div>
+        </div>
+        <div class="input-row">
+          <input id="questionInput" placeholder="例如：阳光电源有哪些风险？" />
+          <button id="askBtn">提交问题</button>
+        </div>
+        <div id="chatBox" class="output">欢迎使用新能源财报智能体，请输入你的问题。</div>
+        <div class="prompt-grid" style="margin-top:16px">
+          <div class="panel">
+            <strong>宁德时代净利润是多少？</strong>
+            <button class="btn-secondary" data-question="宁德时代净利润是多少？" style="margin-top:12px; width:100%">一键提问</button>
+          </div>
+          <div class="panel">
+            <strong>阳光电源有哪些风险？</strong>
+            <button class="btn-secondary" data-question="阳光电源有哪些风险？" style="margin-top:12px; width:100%">一键提问</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card span-4">
+        <div class="card-head">
+          <div>
+            <h2>分析报告</h2>
+            <div class="subtext">按统一模板输出企业核心指标、行业定位、机会与风险。</div>
+          </div>
+        </div>
+        <div class="input-row">
+          <select id="companySelect"></select>
+          <button id="genBtn" style="width:100%">生成报告</button>
+        </div>
+        <div id="reportBox" class="output" style="min-height: 250px;">请选择企业并生成报告。</div>
+      </article>
+
+      <article class="card span-7">
+        <div class="card-head">
+          <div>
+            <h2>企业筛选与浏览</h2>
+            <div class="subtext">支持按名称和赛道筛选企业，点击卡片可查看右侧详细画像。</div>
+          </div>
+        </div>
+        <div class="input-row">
+          <input id="searchInput" placeholder="搜索企业名称" />
+          <select id="sectorFilter"></select>
+          <button id="searchBtn">筛选</button>
+        </div>
+        <div id="companyGrid" class="company-grid" style="margin-top:16px"></div>
+      </article>
+
+      <article class="card span-5">
+        <div class="card-head">
+          <div>
+            <h2>企业画像</h2>
+            <div class="subtext">查看企业摘要、赛道归属、机会与风险，辅助快速理解业务。</div>
+          </div>
+        </div>
+        <div id="detailGrid" class="detail-grid">
+          <div class="output" style="margin-top:0;">请在左侧点击企业卡片查看画像。</div>
+        </div>
+      </article>
+
+      <article class="card span-12">
+        <div class="card-head">
+          <div>
+            <h2>横向指标对比</h2>
+            <div class="subtext">可按赛道过滤图表，并切换营收、净利润、毛利率三个指标进行行业对标。</div>
+          </div>
+          <div id="metricMeta" class="metric-meta"></div>
+        </div>
+        <div class="input-row" style="margin-bottom:20px">
+          <select id="metricSelect">
+            <option value="revenue">营收（亿元）</option>
+            <option value="profit">净利润（亿元）</option>
+            <option value="margin">毛利率（%）</option>
+          </select>
+          <select id="metricSectorFilter"></select>
+          <button id="refreshBtn">刷新图表</button>
+        </div>
+        <div id="bars" class="bars"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    let companyCache = [];
+    let useStaticMode = location.hostname.endsWith("github.io") || location.protocol === "file:";
+
+    const STATIC_DB = {
+      modules: [
+        { title: "智能问答", detail: "输入自然语言问题，返回指标结论和来源说明。" },
+        { title: "指标分析", detail: "对比不同企业的营收、净利润和毛利率表现。" },
+        { title: "企业画像", detail: "查看赛道归属、经营摘要、机会与风险。" },
+        { title: "报告生成", detail: "按统一模板生成企业分析简报。" }
+      ],
+      companies: [
+        { name: "宁德时代", sector: "动力电池", revenue: 4100, profit: 530, margin: 22.1, year: 2025, summary: "动力电池龙头，储能与海外业务协同明显。", opportunity: "储能需求增长和全球化扩张带来增量空间。", risk: "原材料价格波动和行业竞争可能压缩利润率。" },
+        { name: "比亚迪", sector: "整车+电池", revenue: 6200, profit: 420, margin: 18.7, year: 2025, summary: "整车与电池双轮驱动，产业链一体化优势明显。", opportunity: "出口和高端车型放量增强增长弹性。", risk: "价格竞争加剧可能影响整车盈利能力。" },
+        { name: "隆基绿能", sector: "光伏", revenue: 1180, profit: 94, margin: 15.2, year: 2025, summary: "聚焦光伏主产业链，组件与技术路线能力突出。", opportunity: "高效组件和海外市场恢复带动收入改善。", risk: "光伏产业价格波动与阶段性供需错配明显。" },
+        { name: "通威股份", sector: "光伏+硅料", revenue: 1390, profit: 102, margin: 16.8, year: 2025, summary: "硅料与电池片协同布局，具备成本优势。", opportunity: "一体化布局有助于对冲单环节波动。", risk: "硅料价格下行会拖累整体盈利水平。" },
+        { name: "阳光电源", sector: "储能+逆变器", revenue: 980, profit: 87, margin: 21.4, year: 2025, summary: "储能系统和逆变器业务布局完整，海外客户基础较好。", opportunity: "海外储能建设持续推进，系统集成需求提升。", risk: "海外政策变化与项目交付节奏可能影响业绩确认。" },
+        { name: "天齐锂业", sector: "锂矿资源", revenue: 560, profit: 63, margin: 27.6, year: 2025, summary: "上游锂资源企业，对锂盐价格变化较为敏感。", opportunity: "行业复苏时资源端盈利弹性较强。", risk: "锂价波动会直接影响收入和利润表现。" },
+        { name: "恩捷股份", sector: "隔膜", revenue: 214, profit: 31, margin: 29.4, year: 2025, summary: "锂电池隔膜环节代表企业，盈利质量较高。", opportunity: "中高端隔膜需求稳定，有助于维持产品结构优势。", risk: "新增产能释放后，价格压力可能逐步传导。" },
+        { name: "亿纬锂能", sector: "动力+消费电池", revenue: 488, profit: 46, margin: 19.1, year: 2025, summary: "动力与消费电池并行发展，客户结构较为均衡。", opportunity: "新客户开拓与储能产品扩展值得关注。", risk: "多业务线扩张下，资本开支和执行压力较大。" }
+      ]
+    };
+
+    function sourceText(companyName) {
+      return "数据来源：" + companyName + "年度财报与已整理知识库（示例数据）";
+    }
+
+    function buildStaticReport(company) {
+      const avgMargin = STATIC_DB.companies.reduce(function (sum, item) { return sum + item.margin; }, 0) / STATIC_DB.companies.length;
+      const gap = Math.round((company.margin - avgMargin) * 10) / 10;
+      return (
+        company.name + "分析简报\n" +
+        "1. 核心指标：营收约 " + company.revenue + " 亿元，净利润约 " + company.profit + " 亿元，毛利率约 " + company.margin + "%。\n" +
+        "2. 行业定位：企业位于" + company.sector + "方向，毛利率较样本均值" + (gap >= 0 ? "高于 " : "低于 ") + Math.abs(gap) + " 个百分点。\n" +
+        "3. 经营摘要：" + company.summary + "\n" +
+        "4. 潜在机会：" + company.opportunity + "\n" +
+        "5. 主要风险：" + company.risk + "\n" +
+        sourceText(company.name)
+      );
+    }
+
+    function answerStaticQuestion(question) {
+      const q = question.trim();
+      const company = STATIC_DB.companies.find(function (item) { return q.indexOf(item.name) >= 0; });
+      if (!q) return { answer: "请输入问题内容。" };
+      if (company && q.indexOf("净利润") >= 0) return { answer: company.name + "净利润约 " + company.profit + " 亿元。\n" + sourceText(company.name) };
+      if (company && q.indexOf("营收") >= 0) return { answer: company.name + "营收约 " + company.revenue + " 亿元。\n" + sourceText(company.name) };
+      if (company && q.indexOf("毛利率") >= 0) return { answer: company.name + "毛利率约 " + company.margin + "%。\n" + sourceText(company.name) };
+      if (company && (q.indexOf("风险") >= 0 || q.indexOf("机会") >= 0)) {
+        return { answer: company.name + "的潜在机会：" + company.opportunity + "\n" + company.name + "的主要风险：" + company.risk + "\n" + sourceText(company.name) };
+      }
+      if (q.indexOf("毛利率") >= 0 && q.indexOf("比亚迪") >= 0 && q.indexOf("宁德时代") >= 0) {
+        return { answer: "毛利率对比：宁德时代 22.1%，比亚迪 18.7%，宁德时代更高。\n数据来源：新能源企业财报对比（示例数据）" };
+      }
+      if (q.indexOf("趋势") >= 0 || q.indexOf("机会") >= 0) {
+        return { answer: "新能源行业当前关注点包括储能建设、海外市场扩张、光伏与锂电产业链协同，以及原材料价格变化带来的利润弹性。\n数据来源：行业研报摘要与已整理知识库（示例数据）" };
+      }
+      return { answer: "当前支持企业营收、净利润、毛利率、企业机会与风险等问题。\n你可以直接提问：宁德时代净利润是多少？ 阳光电源有哪些风险？" };
+    }
+
+    function localRequestJson(url, options) {
+      const urlObj = new URL(url, "https://local.test");
+      const path = urlObj.pathname;
+      const params = urlObj.searchParams;
+
+      if (path === "/api/overview") {
+        return Promise.resolve({
+          companyCount: STATIC_DB.companies.length,
+          sectorCount: new Set(STATIC_DB.companies.map(function (item) { return item.sector; })).size,
+          moduleCount: STATIC_DB.modules.length,
+          modules: STATIC_DB.modules
+        });
+      }
+
+      if (path === "/api/sectors") {
+        return Promise.resolve({
+          items: Array.from(new Set(STATIC_DB.companies.map(function (item) { return item.sector; }))).sort()
+        });
+      }
+
+      if (path === "/api/companies") {
+        const keyword = params.get("keyword") || "";
+        const sector = params.get("sector") || "";
+        const items = STATIC_DB.companies.filter(function (item) {
+          const sectorOk = !sector || item.sector === sector;
+          const keywordOk = !keyword || item.name.indexOf(keyword) >= 0 || item.sector.indexOf(keyword) >= 0;
+          return sectorOk && keywordOk;
+        });
+        return Promise.resolve({ items: items });
+      }
+
+      if (path.indexOf("/api/company/") === 0) {
+        const companyName = decodeURIComponent(path.replace("/api/company/", ""));
+        const company = STATIC_DB.companies.find(function (item) { return item.name === companyName; });
+        if (!company) return Promise.reject(new Error("未找到企业：" + companyName));
+        return Promise.resolve({ item: company });
+      }
+
+      if (path === "/api/metrics") {
+        const metric = params.get("metric") || "revenue";
+        const sector = params.get("sector") || "";
+        const items = STATIC_DB.companies
+          .filter(function (item) { return !sector || item.sector === sector; })
+          .map(function (item) {
+            return { name: item.name, sector: item.sector, value: item[metric] };
+          });
+        return Promise.resolve({ metric: metric, items: items });
+      }
+
+      if (path === "/api/ask") {
+        const body = options && options.body ? JSON.parse(options.body) : { question: "" };
+        return Promise.resolve(answerStaticQuestion(body.question || ""));
+      }
+
+      if (path === "/api/report") {
+        const body = options && options.body ? JSON.parse(options.body) : { company: "" };
+        const company = STATIC_DB.companies.find(function (item) { return item.name === body.company; });
+        if (!company) return Promise.reject(new Error("未找到企业：" + body.company));
+        return Promise.resolve({ report: buildStaticReport(company) });
+      }
+
+      return Promise.reject(new Error("静态模式下未实现接口：" + path));
+    }
+
+    async function requestJson(url, options) {
+      if (useStaticMode) {
+        return localRequestJson(url, options);
+      }
+
+      try {
+        const response = await fetch(url, {
+          headers: { "Content-Type": "application/json" },
+          ...options
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || ("请求失败：" + response.status));
+        }
+        return response.json();
+      } catch (error) {
+        useStaticMode = true;
+        console.warn("API 不可用，已切换为静态模式。", error);
+        return localRequestJson(url, options);
+      }
+    }
+
+    function createBarRow(item, maxValue) {
+      const row = document.createElement("div");
+      row.className = "bar-row";
+      const width = Math.max(2, Math.round(item.value / maxValue * 100)); // 最小宽度保障
+      row.innerHTML =
+        "<div style='font-weight:500;'>" + item.name + "</div>" +
+        "<div class='track'><div class='fill' style='width:" + width + "%'></div></div>" +
+        "<div style='text-align:right; font-family:monospace; font-size:15px;'>" + item.value + "</div>";
+      return row;
+    }
+
+    // 兼容可能遗留的接口调用，即使模块被删除了也不报错
+    function renderModules(items) {
+      const root = document.getElementById("moduleGrid");
+      if (!root) return;
+      root.innerHTML = "";
+      items.forEach(function (item) {
+        const node = document.createElement("div");
+        node.className = "metric-box";
+        node.innerHTML = "<div>模块</div><strong>" + item.title + "</strong><small>" + item.detail + "</small>";
+        root.appendChild(node);
+      });
+    }
+
+    function renderSelectOptions(select, items, includeAllText) {
+      if(!select) return;
+      select.innerHTML = "";
+      if (includeAllText) {
+        const all = document.createElement("option");
+        all.value = "";
+        all.textContent = includeAllText;
+        select.appendChild(all);
+      }
+      items.forEach(function (item) {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item;
+        select.appendChild(option);
+      });
+    }
+
+    function renderCompanies(items) {
+      companyCache = items;
+      const root = document.getElementById("companyGrid");
+      const select = document.getElementById("companySelect");
+      if(root) root.innerHTML = "";
+      if(select) select.innerHTML = "";
+
+      items.forEach(function (item, index) {
+        if(root) {
+            const card = document.createElement("div");
+            card.className = "company";
+            card.innerHTML =
+            "<div>" + item.sector + "</div>" +
+            "<strong>" + item.name + "</strong>" +
+            "<small>营收 " + item.revenue + " 亿</small>" +
+            "<small>净利 " + item.profit + " 亿</small>";
+            card.addEventListener("click", function () {
+            loadCompanyDetail(item.name).catch(function (error) {
+                document.getElementById("detailGrid").innerHTML = "<div class='panel'>" + error.message + "</div>";
+            });
+            });
+            root.appendChild(card);
+        }
+
+        if(select) {
+            const option = document.createElement("option");
+            option.value = item.name;
+            option.textContent = item.name;
+            select.appendChild(option);
+        }
+
+        if (index === 0) {
+          renderCompanyDetail(item);
+        }
+      });
+      
+      // 处理被删除元素的兼容
+      const hc = document.getElementById("heroCompanies");
+      if(hc) hc.textContent = items.length + " 家";
+    }
+
+    function renderCompanyDetail(item) {
+      const root = document.getElementById("detailGrid");
+      if(!root) return;
+      root.innerHTML = "";
+      [
+        { title: "企业概况", text: item.summary },
+        { title: "潜在机会", text: item.opportunity },
+        { title: "主要风险", text: item.risk }
+      ].forEach(function (block) {
+        const node = document.createElement("div");
+        node.className = "panel";
+        node.innerHTML = "<div>" + block.title + "</div><strong>" + item.name + "</strong><small>" + block.text + "</small>";
+        root.appendChild(node);
+      });
+    }
+
+    async function loadOverview() {
+      try {
+        const data = await requestJson("/api/overview");
+        const hs = document.getElementById("heroSectors");
+        if(hs) hs.textContent = data.sectorCount + " 个";
+        const hm = document.getElementById("heroModules");
+        if(hm) hm.textContent = data.moduleCount + " 个";
+        renderModules(data.modules);
+      } catch(e) { console.log("Overview init skipped."); }
+    }
+
+    async function loadSectors() {
+      const data = await requestJson("/api/sectors");
+      renderSelectOptions(document.getElementById("sectorFilter"), data.items, "全部赛道");
+      renderSelectOptions(document.getElementById("metricSectorFilter"), data.items, "全部赛道");
+    }
+
+    async function loadCompanies() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      const sector = document.getElementById("sectorFilter").value;
+      const query = new URLSearchParams();
+      if (keyword) query.set("keyword", keyword);
+      if (sector) query.set("sector", sector);
+      const url = "/api/companies" + (query.toString() ? "?" + query.toString() : "");
+      const data = await requestJson(url);
+      renderCompanies(data.items);
+    }
+
+    async function loadCompanyDetail(companyName) {
+      const data = await requestJson("/api/company/" + encodeURIComponent(companyName));
+      renderCompanyDetail(data.item);
+    }
+
+    async function loadMetrics() {
+      const metric = document.getElementById("metricSelect").value;
+      const sector = document.getElementById("metricSectorFilter").value;
+      const labels = {
+        revenue: "营收（亿元）",
+        profit: "净利润（亿元）",
+        margin: "毛利率（%）"
+      };
+      const query = new URLSearchParams({ metric: metric });
+      if (sector) query.set("sector", sector);
+      const data = await requestJson("/api/metrics?" + query.toString());
+      const root = document.getElementById("bars");
+      if(!root) return;
+      root.innerHTML = "";
+      const values = data.items.map(function (item) { return item.value; });
+      const maxValue = Math.max.apply(null, values.concat([1]));
+      data.items.forEach(function (item) {
+        root.appendChild(createBarRow(item, maxValue));
+      });
+      const meta = document.getElementById("metricMeta");
+      if(meta) meta.textContent = "当前展示：" + labels[metric] + (sector ? " · " + sector : " · 全部赛道");
+    }
+
+    async function askQuestion(value) {
+      const question = typeof value === "string" ? value : document.getElementById("questionInput").value.trim();
+      if (!question) {
+        document.getElementById("chatBox").textContent = "请输入问题内容。";
+        return;
+      }
+      document.getElementById("questionInput").value = question;
+      document.getElementById("chatBox").textContent = "思考中...";
+      const data = await requestJson("/api/ask", {
+        method: "POST",
+        body: JSON.stringify({ question: question })
+      });
+      document.getElementById("chatBox").textContent = data.answer;
+    }
+
+    async function generateReport() {
+      const company = document.getElementById("companySelect").value;
+      document.getElementById("reportBox").textContent = "生成中，请稍候...";
+      const data = await requestJson("/api/report", {
+        method: "POST",
+        body: JSON.stringify({ company: company })
+      });
+      document.getElementById("reportBox").textContent = data.report;
+    }
+
+    // 事件绑定
+    document.getElementById("askBtn")?.addEventListener("click", function () {
+      askQuestion().catch(function (error) {
+        document.getElementById("chatBox").textContent = "问答失败：" + error.message;
+      });
+    });
+
+    document.getElementById("questionInput")?.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        askQuestion().catch(function (error) {
+          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
+        });
+      }
+    });
+
+    document.querySelectorAll("[data-question]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        askQuestion(button.getAttribute("data-question")).catch(function (error) {
+          document.getElementById("chatBox").textContent = "问答失败：" + error.message;
+        });
+      });
+    });
+
+    document.getElementById("searchBtn")?.addEventListener("click", function () {
+      loadCompanies().catch(function (error) {
+        document.getElementById("companyGrid").innerHTML = "<div class='panel'>筛选失败：" + error.message + "</div>";
+      });
+    });
+
+    document.getElementById("sectorFilter")?.addEventListener("change", function () {
+      loadCompanies().catch(function (error) {
+        document.getElementById("companyGrid").innerHTML = "<div class='panel'>筛选失败：" + error.message + "</div>";
+      });
+    });
+
+    document.getElementById("refreshBtn")?.addEventListener("click", function () {
+      loadMetrics().catch(function (error) {
+        document.getElementById("metricMeta").textContent = "图表刷新失败：" + error.message;
+      });
+    });
+
+    document.getElementById("metricSelect")?.addEventListener("change", function () {
+      loadMetrics().catch(function (error) {
+        document.getElementById("metricMeta").textContent = "图表刷新失败：" + error.message;
+      });
+    });
+
+    document.getElementById("metricSectorFilter")?.addEventListener("change", function () {
+      loadMetrics().catch(function (error) {
+        document.getElementById("metricMeta").textContent = "图表刷新失败：" + error.message;
+      });
+    });
+
+    document.getElementById("genBtn")?.addEventListener("click", function () {
+      generateReport().catch(function (error) {
+        document.getElementById("reportBox").textContent = "报告生成失败：" + error.message;
+      });
+    });
+
+    Promise.all([
+      loadOverview(),
+      loadSectors(),
+      loadCompanies(),
+      loadMetrics()
+    ]).catch(function (error) {
+      const cb = document.getElementById("chatBox");
+      if(cb) cb.textContent = "页面初始化失败：" + error.message;
+    });
+  </script>
 </body>
 </html>
