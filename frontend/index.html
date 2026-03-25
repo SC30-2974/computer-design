@@ -409,6 +409,7 @@
   </main>
 
   <script>
+    // companyCache 保存当前筛选结果，静态模式用于 GitHub Pages / file 直开场景兜底。
     let companyCache = [];
     let useStaticMode = location.hostname.endsWith("github.io") || location.protocol === "file:";
 
@@ -430,10 +431,12 @@
       ]
     };
 
+    // 前端静态模式下也保持和后端相同的来源说明格式。
     function sourceText(company) {
       return "数据来源：" + company.source + " 毛利率优先采用报告披露口径，未直接披露时按前三季度营业收入与营业成本测算。";
     }
 
+    // 报告区直接复用这一套模板，确保静态模式和后端模式输出结构一致。
     function buildStaticReport(company) {
       const avgMargin = STATIC_DB.companies.reduce(function (sum, item) { return sum + item.margin; }, 0) / STATIC_DB.companies.length;
       const gap = Math.round((company.margin - avgMargin) * 10) / 10;
@@ -448,6 +451,7 @@
       );
     }
 
+    // 这里提供一个最小可用问答兜底，避免 GitHub Pages 上没有后端时整个页面失效。
     function answerStaticQuestion(question) {
       const q = question.trim();
       const company = STATIC_DB.companies.find(function (item) { return q.indexOf(item.name) >= 0; });
@@ -467,6 +471,7 @@
       return { answer: "当前支持企业前三季度营收、净利润、毛利率、企业机会与风险等问题。\n你可以直接提问：宁德时代净利润是多少？ 阳光电源有哪些风险？" };
     }
 
+    // 把本地静态数据包装成“假接口”，这样页面逻辑可以统一走 requestJson。
     function localRequestJson(url, options) {
       const urlObj = new URL(url, "https://local.test");
       const path = urlObj.pathname;
@@ -531,6 +536,7 @@
       return Promise.reject(new Error("静态模式下未实现接口：" + path));
     }
 
+    // 优先请求真实后端；如果失败，再自动切换到静态模式。
     async function requestJson(url, options) {
       if (useStaticMode) {
         return localRequestJson(url, options);
@@ -553,6 +559,7 @@
       }
     }
 
+    // 横向对比图本质上是自定义进度条，用最少结构完成轻量可视化。
     function createBarRow(item, maxValue) {
       const row = document.createElement("div");
       row.className = "bar-row";
@@ -577,6 +584,7 @@
       });
     }
 
+    // 下拉框渲染统一走这个函数，避免多个地方重复写 option 创建逻辑。
     function renderSelectOptions(select, items, includeAllText) {
       if(!select) return;
       select.innerHTML = "";
@@ -594,6 +602,7 @@
       });
     }
 
+    // 左侧企业卡片和右上报告选择框都依赖同一份企业列表。
     function renderCompanies(items) {
       companyCache = items;
       const root = document.getElementById("companyGrid");
@@ -625,6 +634,7 @@
             select.appendChild(option);
         }
 
+        // 默认展示第一家企业的画像，避免右侧出现空白状态。
         if (index === 0) {
           renderCompanyDetail(item);
         }
@@ -635,6 +645,7 @@
       if(hc) hc.textContent = items.length + " 家";
     }
 
+    // 企业画像拆成三个信息块，方便后续继续扩展来源、亮点等字段。
     function renderCompanyDetail(item) {
       const root = document.getElementById("detailGrid");
       if(!root) return;
@@ -651,6 +662,7 @@
       });
     }
 
+    // 这部分当前主要是兼容保留接口，页面没有对应模块时会自动跳过。
     async function loadOverview() {
       try {
         const data = await requestJson("/api/overview");
@@ -662,12 +674,14 @@
       } catch(e) { console.log("Overview init skipped."); }
     }
 
+    // 同步更新企业筛选和指标筛选两个下拉框。
     async function loadSectors() {
       const data = await requestJson("/api/sectors");
       renderSelectOptions(document.getElementById("sectorFilter"), data.items, "全部赛道");
       renderSelectOptions(document.getElementById("metricSectorFilter"), data.items, "全部赛道");
     }
 
+    // 读取当前筛选条件后重新获取企业列表。
     async function loadCompanies() {
       const keyword = document.getElementById("searchInput").value.trim();
       const sector = document.getElementById("sectorFilter").value;
@@ -684,6 +698,7 @@
       renderCompanyDetail(data.item);
     }
 
+    // 指标图支持按赛道过滤，并且可在营收 / 净利润 / 毛利率之间切换。
     async function loadMetrics() {
       const metric = document.getElementById("metricSelect").value;
       const sector = document.getElementById("metricSectorFilter").value;
@@ -707,6 +722,7 @@
       if(meta) meta.textContent = "当前展示：" + labels[metric] + (sector ? " · " + sector : " · 全部赛道");
     }
 
+    // 报告区只负责展示文本，由后端或静态兜底返回完整内容。
     async function generateReport() {
       const company = document.getElementById("companySelect").value;
       document.getElementById("reportBox").textContent = "生成中，请稍候...";
@@ -717,7 +733,7 @@
       document.getElementById("reportBox").textContent = data.report;
     }
 
-    // 事件绑定
+    // 所有交互都集中在这里绑定，后续查问题会更直观。
     document.getElementById("searchBtn")?.addEventListener("click", function () {
       loadCompanies().catch(function (error) {
         document.getElementById("companyGrid").innerHTML = "<div class='panel'>筛选失败：" + error.message + "</div>";
@@ -754,6 +770,7 @@
       });
     });
 
+    // 页面首次加载时并行初始化，减少首屏等待时间。
     Promise.all([
       loadOverview(),
       loadSectors(),

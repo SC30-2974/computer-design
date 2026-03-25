@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
@@ -19,6 +19,7 @@ app = FastAPI(
     version="3.0.0",
 )
 
+# 这里保持全开放，方便本地开发和后续前后端分离联调。
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+# 页面展示使用的企业样本，已经统一为 2025 年前三季度财报口径。
 COMPANY_DATA: list[dict[str, Any]] = [
     {
         "name": "比亚迪",
@@ -122,6 +123,7 @@ COMPANY_DATA: list[dict[str, Any]] = [
     },
 ]
 
+# 这些结构当前不是首页主展示内容，但保留接口便于后续继续扩展。
 REFERENCE_DOCS: list[dict[str, Any]] = [
     {
         "title": "企业财报样本",
@@ -223,6 +225,7 @@ def make_report(company_name: str) -> str:
     if company is None:
         raise HTTPException(status_code=404, detail=f"未找到企业：{company_name}")
 
+    # 这里用样本均值做一个轻量横向参照，便于报告里快速给出相对位置。
     industry_avg_margin = round(sum(item["margin"] for item in COMPANY_DATA) / len(COMPANY_DATA), 1)
     margin_gap = round(company["margin"] - industry_avg_margin, 1)
     gap_text = "高于" if margin_gap >= 0 else "低于"
@@ -303,6 +306,7 @@ def report(req: ReportRequest) -> dict[str, str]:
 
 
 if FRONTEND_DIR.exists():
+    # 这里挂载静态目录，方便后续把图片或额外前端资源放进 frontend/ 下统一访问。
     app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR)), name="assets")
 
 
