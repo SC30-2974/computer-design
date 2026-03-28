@@ -1,10 +1,10 @@
 ﻿<template>
-  <section class="relative flex min-h-[calc(100vh-10rem)] flex-col">
+  <section class="relative flex min-h-[calc(100vh-12rem)] flex-col lg:min-h-[calc(100vh-10rem)]">
     <!-- 中心欢迎区 -->
     <div class="hero-center flex flex-1 items-center justify-center px-6">
       <div class="text-center">
         <p class="welcome-tag text-xs uppercase tracking-[0.4em] text-emerald-500">Welcome</p>
-        <h1 class="art-title mt-5 text-4xl font-black leading-tight md:text-6xl">
+        <h1 class="art-title mt-5 text-3xl font-black leading-tight sm:text-5xl md:text-6xl">
           欢迎来到新能源财报智能体系统
         </h1>
       </div>
@@ -12,7 +12,7 @@
 
     <!-- 下端功能区 -->
     <div class="pb-2 pt-4">
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <RouterLink
           to="/dashboard"
           class="feature-card rounded-2xl border border-emerald-300/30 bg-white/85 p-5 transition hover:-translate-y-1 hover:shadow-[0_16px_30px_rgba(16,185,129,0.2)]"

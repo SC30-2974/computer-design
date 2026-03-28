@@ -1,5 +1,5 @@
 ﻿<template>
-  <section class="space-y-5 rounded-3xl border border-emerald-300/25 bg-white/75 p-6">
+  <section class="space-y-5 rounded-3xl border border-emerald-300/25 bg-white/75 p-4 sm:p-6">
     <div class="flex flex-wrap items-center gap-3">
       <select v-model="metric" class="rounded-xl border border-emerald-300/30 bg-white px-4 py-2 text-sm text-emerald-900" @change="loadData">
         <option value="revenue">营收（亿元）</option>
@@ -13,7 +13,7 @@
       </select>
     </div>
 
-    <div ref="barRef" class="h-[420px] w-full"></div>
+    <div ref="barRef" class="h-[320px] w-full sm:h-[380px] lg:h-[420px]"></div>
 
     <div class="rounded-2xl border border-emerald-300/30 bg-white/85 p-5">
       <div class="mb-3 flex items-center justify-between gap-3">

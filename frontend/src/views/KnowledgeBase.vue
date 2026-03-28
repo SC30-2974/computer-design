@@ -1,12 +1,12 @@
 ﻿<template>
-  <section class="space-y-5 rounded-3xl border border-emerald-300/25 bg-white/80 p-6">
-    <div class="flex items-center justify-between">
+  <section class="space-y-5 rounded-3xl border border-emerald-300/25 bg-white/80 p-4 sm:p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
         <h3 class="text-lg font-semibold text-emerald-900">知识库资产管理</h3>
         <p class="mt-1 text-sm text-emerald-700">展示财报文档解析、向量化和切块状态。</p>
       </div>
 
-      <button class="rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-950 hover:bg-emerald-300">
+      <button class="w-full rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-950 hover:bg-emerald-300 sm:w-auto">
         上传最新财报 PDF
       </button>
     </div>

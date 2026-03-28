@@ -20,7 +20,7 @@
         <h3 class="text-lg font-semibold text-emerald-900">新能源各赛道营收占比</h3>
         <p class="text-xs text-emerald-700">按赛道聚合企业营收（亿元）</p>
       </div>
-      <div ref="pieRef" class="h-[460px] w-full"></div>
+      <div ref="pieRef" class="h-[300px] w-full sm:h-[360px] lg:h-[460px]"></div>
     </div>
   </section>
 </template>
