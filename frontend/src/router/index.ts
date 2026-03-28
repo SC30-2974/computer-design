@@ -9,7 +9,8 @@ import KnowledgeBase from '../views/KnowledgeBase.vue'
 // 路由主配置：采用主布局 + 子页面的方式。
 // 这样左侧导航和顶部 Header 只渲染一次，右侧内容区随路由切换。
 const router = createRouter({
-  history: createWebHistory(),
+  // 与 Vite BASE_URL 对齐，确保 GitHub Pages 子路径下路由可用。
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
