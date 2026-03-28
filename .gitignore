@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Build and temp artifacts
+.dist/
+*.log
+
+# Local data files
+data/*.db
+data/*.db-journal
+test_root.db
+test_root.db-journal
+
+# IDE
+.vscode/
+.idea/
