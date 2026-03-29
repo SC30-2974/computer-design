@@ -1,10 +1,11 @@
 ﻿from __future__ import annotations
 
 import sqlite3
+from datetime import datetime
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from .db import get_db
@@ -21,6 +22,8 @@ from .services.metrics_service import (
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 FRONTEND_DIST_DIR = BASE_DIR / 'frontend' / 'dist'
+UPLOAD_DIR = BASE_DIR / 'data' / 'uploads'
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title='新能源财报智能体系统 API',
@@ -201,4 +204,33 @@ def compare_report(req: CompareReportRequest, db: DbDep) -> dict:
             }
             for row in rows
         ],
+    }
+
+
+@app.post('/api/knowledge/upload')
+async def upload_finance_pdf(file: UploadFile = File(...)) -> dict:
+    filename = file.filename or ''
+    if not filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail='仅支持 PDF 文件上传。')
+
+    save_path = UPLOAD_DIR / filename
+    content = await file.read()
+    save_path.write_bytes(content)
+
+    # 当前版本先返回基础记录，后续可接入真实 PDF 解析与向量化任务队列。
+    company_name = filename.split('2025')[0].strip() or '未识别企业'
+    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+    chunks = max(80, min(500, len(content) // 8000))
+
+    return {
+        'message': '上传成功',
+        'item': {
+            'id': int(datetime.now().timestamp()),
+            'fileName': filename,
+            'company': company_name,
+            'uploadTime': now_str,
+            'status': '解析中',
+            'chunks': chunks,
+            'savedPath': str(save_path),
+        },
     }

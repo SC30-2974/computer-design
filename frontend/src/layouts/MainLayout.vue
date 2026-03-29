@@ -3,9 +3,7 @@
     <aside class="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-emerald-300/25 bg-white/90 backdrop-blur-xl lg:block">
       <div class="flex h-full flex-col px-5 py-6">
         <div class="mb-8">
-          <p class="text-xs uppercase tracking-[0.36em] text-emerald-300/80">Energy ESG AI</p>
-          <h1 class="mt-3 text-xl font-semibold text-emerald-900">新能源财报智能分析平台</h1>
-          <p class="mt-2 text-xs leading-5 text-emerald-700">绿色产业洞察 · 智能研判 · 资产可追溯</p>
+          <h1 class="text-xl font-semibold text-emerald-900">新能源财报智能分析平台</h1>
         </div>
 
         <nav class="space-y-2">
@@ -87,7 +85,6 @@
         <div class="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
             <h2 class="text-base font-semibold text-emerald-900">{{ currentTitle }}</h2>
-            <p class="text-xs text-emerald-700">新能源环保风格 · 现代 SaaS 管理台</p>
           </div>
           <div class="flex items-center gap-2">
             <button
@@ -96,9 +93,6 @@
             >
               菜单
             </button>
-            <div class="rounded-full border border-emerald-300/20 bg-emerald-100 px-3 py-1 text-xs text-emerald-900">
-              环保智能模式
-            </div>
           </div>
         </div>
       </header>

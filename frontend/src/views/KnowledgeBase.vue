@@ -6,10 +6,23 @@
         <p class="mt-1 text-sm text-emerald-700">展示财报文档解析、向量化和切块状态。</p>
       </div>
 
-      <button class="w-full rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-950 hover:bg-emerald-300 sm:w-auto">
-        上传最新财报 PDF
+      <input
+        ref="fileInputRef"
+        type="file"
+        accept=".pdf,application/pdf"
+        class="hidden"
+        @change="onFileSelected"
+      />
+      <button
+        class="w-full rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+        :disabled="uploading"
+        @click="triggerUpload"
+      >
+        {{ uploading ? '上传中...' : '上传最新财报 PDF' }}
       </button>
     </div>
+
+    <p v-if="uploadMessage" class="text-sm text-emerald-700">{{ uploadMessage }}</p>
 
     <div class="overflow-x-auto rounded-2xl border border-emerald-300/15">
       <table class="min-w-full divide-y divide-emerald-300/10 text-sm">
@@ -45,6 +58,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { uploadFinancePdf } from '../api/finance'
 
 // Mock 文档记录：用于展示知识库资产面板。
 const documents = ref([
@@ -73,5 +87,39 @@ const documents = ref([
     chunks: 127,
   },
 ])
-</script>
 
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const uploading = ref(false)
+const uploadMessage = ref('')
+
+const triggerUpload = () => {
+  fileInputRef.value?.click()
+}
+
+const onFileSelected = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  if (!file.name.toLowerCase().endsWith('.pdf')) {
+    uploadMessage.value = '仅支持上传 PDF 文件。'
+    input.value = ''
+    return
+  }
+
+  uploading.value = true
+  uploadMessage.value = ''
+  try {
+    const { data } = await uploadFinancePdf(file)
+    if (data?.item) {
+      documents.value = [data.item, ...documents.value]
+    }
+    uploadMessage.value = data?.message || '上传成功。'
+  } catch (error: any) {
+    uploadMessage.value = error?.response?.data?.detail || '上传失败，请检查后端服务后重试。'
+  } finally {
+    uploading.value = false
+    input.value = ''
+  }
+}
+</script>

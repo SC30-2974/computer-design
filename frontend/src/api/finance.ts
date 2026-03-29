@@ -106,10 +106,12 @@ const toNetMargin = (row: CompanyRow): number => {
 }
 
 const getApiBaseUrl = (): string => {
-  if (typeof window === 'undefined') return 'http://127.0.0.1:8001'
+  const envBase = import.meta.env.VITE_API_BASE_URL as string | undefined
+  if (envBase) return envBase
+  if (typeof window === 'undefined') return 'http://127.0.0.1:8010'
   const { hostname, origin } = window.location
   if (hostname === '127.0.0.1' || hostname === 'localhost') {
-    return 'http://127.0.0.1:8001'
+    return 'http://127.0.0.1:8010'
   }
   return origin
 }
@@ -302,6 +304,14 @@ export const downloadTextFile = (filename: string, content: string) => {
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
+}
+
+export const uploadFinancePdf = async (file: File) => {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request.post('/api/knowledge/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 }
 
 export default request
