@@ -112,9 +112,9 @@ import { useRoute } from 'vue-router'
 const menus = [
   { path: '/home', label: '主界面', icon: '🏠' },
   { path: '/dashboard', label: '宏观行业大屏', icon: '📊' },
+  { path: '/enterprise-detail', label: '企业详情', icon: '🏢' },
   { path: '/agent-room', label: '智能研判室', icon: '🤖' },
   { path: '/financial-analysis', label: '财务指标对比', icon: '📈' },
-  { path: '/knowledge-base', label: '知识库资产管理', icon: '📚' },
 ]
 
 const route = useRoute()

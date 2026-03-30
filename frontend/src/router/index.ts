@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import AgentRoom from '../views/AgentRoom.vue'
 import FinancialAnalysis from '../views/FinancialAnalysis.vue'
-import KnowledgeBase from '../views/KnowledgeBase.vue'
+import EnterpriseDetail from '../views/EnterpriseDetail.vue'
 
 // 路由主配置：采用主布局 + 子页面的方式。
 // 这样左侧导航和顶部 Header 只渲染一次，右侧内容区随路由切换。
@@ -42,10 +42,10 @@ const router = createRouter({
           meta: { title: '财务指标对比' },
         },
         {
-          path: 'knowledge-base',
-          name: 'knowledge-base',
-          component: KnowledgeBase,
-          meta: { title: '知识库资产管理' },
+          path: 'enterprise-detail',
+          name: 'enterprise-detail',
+          component: EnterpriseDetail,
+          meta: { title: '企业详情' },
         },
       ],
     },

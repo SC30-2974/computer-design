@@ -306,6 +306,53 @@ export const downloadTextFile = (filename: string, content: string) => {
   URL.revokeObjectURL(url)
 }
 
+export const downloadPdfFromText = (title: string, content: string) => {
+  const escaped = content
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br/>')
+
+  const html = `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>${title}</title>
+  <style>
+    body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; padding: 24px; color: #0f172a; }
+    h1 { font-size: 22px; margin-bottom: 14px; }
+    .content { line-height: 1.8; font-size: 14px; white-space: normal; }
+  </style>
+</head>
+<body>
+  <h1>${title}</h1>
+  <div class="content">${escaped}</div>
+</body>
+</html>`
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const frame = document.createElement('iframe')
+  frame.style.position = 'fixed'
+  frame.style.right = '0'
+  frame.style.bottom = '0'
+  frame.style.width = '0'
+  frame.style.height = '0'
+  frame.style.border = '0'
+  document.body.appendChild(frame)
+
+  frame.onload = () => {
+    frame.contentWindow?.focus()
+    frame.contentWindow?.print()
+    setTimeout(() => {
+      document.body.removeChild(frame)
+      URL.revokeObjectURL(url)
+    }, 800)
+  }
+
+  frame.src = url
+}
+
 export const uploadFinancePdf = async (file: File) => {
   const formData = new FormData()
   formData.append('file', file)

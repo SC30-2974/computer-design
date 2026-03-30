@@ -42,6 +42,14 @@ app.add_middleware(
 DbDep = Annotated[sqlite3.Connection, Depends(get_db)]
 
 
+def format_source_page(page: object) -> str:
+    try:
+        n = int(float(str(page)))
+        return f'P{n}' if n > 0 else '待标注'
+    except Exception:
+        return '待标注'
+
+
 @app.get('/api/health')
 def health() -> dict[str, str]:
     return {'status': 'ok'}
@@ -144,7 +152,7 @@ def generate_report(req: ReportRequest, db: DbDep) -> dict:
             {
                 'source': 'finance_app.db/company_metrics',
                 'company_name': company['company_name'],
-                'page': company.get('source_page') or '结构化数据',
+                'page': format_source_page(company.get('source_page')),
             }
         ],
     }
@@ -189,9 +197,7 @@ def compare_report(req: CompareReportRequest, db: DbDep) -> dict:
 
     lines.extend(['', '四、引用来源'])
     for row in rows:
-        lines.append(
-            f"- {row['company_name']}：finance_app.db/company_metrics，source_page={row.get('source_page') or '结构化数据'}"
-        )
+        lines.append(f"- {row['company_name']}：finance_app.db/company_metrics")
 
     return {
         'report_text': '\n'.join(lines),
@@ -200,7 +206,7 @@ def compare_report(req: CompareReportRequest, db: DbDep) -> dict:
             {
                 'source': 'finance_app.db/company_metrics',
                 'company_name': row['company_name'],
-                'page': row.get('source_page') or '结构化数据',
+                'page': format_source_page(row.get('source_page')),
             }
             for row in rows
         ],
