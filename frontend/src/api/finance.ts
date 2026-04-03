@@ -361,4 +361,16 @@ export const uploadFinancePdf = async (file: File) => {
   })
 }
 
+export const refreshData = async () => {
+  return request.post('/api/data/refresh', null, { timeout: 60000 })
+}
+
+export const listUploads = async () => {
+  return request.get('/api/knowledge/list')
+}
+
+export const getUploadFileUrl = (id: number) => {
+  return `${getApiBaseUrl()}/api/knowledge/file/${id}`
+}
+
 export default request

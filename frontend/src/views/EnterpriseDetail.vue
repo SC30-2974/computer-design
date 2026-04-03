@@ -13,7 +13,7 @@
             class="min-w-[120px] bg-transparent text-sm font-medium text-emerald-900 outline-none"
             @change="loadEnterpriseDetail"
           >
-            <option v-for="item in companyOptions" :key="item" :value="item">{{ item }}</option>
+            <option v-for="item in companyOptions" :key="item" :value="item">{{ shortLabel(item) }}</option>
           </select>
         </div>
       </div>
@@ -139,6 +139,25 @@ let trendChart: echarts.ECharts | null = null
 const scoreCard = ref({ growth: 0, quality: 0, risk: 0 })
 
 const formatNumber = (value: number) => Number(value || 0).toFixed(2)
+
+const normalizeCompanyName = (value: string) => {
+  if (!value) return value
+  const suffixes = ['股份有限公司', '集团股份有限公司', '集团有限公司', '有限责任公司', '有限公司', '集团']
+  let result = value
+  for (const suffix of suffixes) {
+    if (result.endsWith(suffix)) {
+      result = result.slice(0, Math.max(1, result.length - suffix.length))
+      break
+    }
+  }
+  return result
+}
+
+const shortLabel = (value: string, max = 8) => {
+  if (!value) return value
+  const normalized = normalizeCompanyName(value)
+  return normalized.length > max ? `${normalized.slice(0, max)}...` : normalized
+}
 
 const buildOverallAverage = () => {
   const peers = allCompanies.value
@@ -323,23 +342,31 @@ const loadEnterpriseDetail = async () => {
   renderTrendChart()
 }
 
+const refreshAll = async () => {
+  const { data } = await getCompanies()
+  const items = Array.isArray(data?.items) ? data.items : []
+  allCompanies.value = items
+  companyOptions.value = items.map((item: CompanyItem) => item.company_name)
+  if (!companyOptions.value.includes(selectedCompany.value)) {
+    selectedCompany.value = companyOptions.value[0] || ''
+  }
+  await loadEnterpriseDetail()
+}
+
 const handleResize = () => {
   compareChart?.resize()
   trendChart?.resize()
 }
 
 onMounted(async () => {
-  const { data } = await getCompanies()
-  const items = Array.isArray(data?.items) ? data.items : []
-  allCompanies.value = items
-  companyOptions.value = items.map((item: CompanyItem) => item.company_name)
-  selectedCompany.value = companyOptions.value[0] || ''
-  await loadEnterpriseDetail()
+  await refreshAll()
   window.addEventListener('resize', handleResize)
+  window.addEventListener('data-refreshed', refreshAll)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('data-refreshed', refreshAll)
   compareChart?.dispose()
   trendChart?.dispose()
   compareChart = null

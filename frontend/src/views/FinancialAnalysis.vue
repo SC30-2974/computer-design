@@ -38,7 +38,7 @@
             :checked="selectedCompanies.includes(item)"
             @change="toggleCompany(item)"
           />
-          {{ item }}
+          <span :title="item">{{ shortLabel(item) }}</span>
         </label>
       </div>
 
@@ -78,7 +78,7 @@
           </thead>
           <tbody class="divide-y divide-emerald-300/15 bg-white text-emerald-900">
             <tr v-for="item in citationRows" :key="item.company_name">
-              <td class="px-3 py-2">{{ item.company_name }}</td>
+              <td class="px-3 py-2" :title="item.company_name">{{ shortLabel(item.company_name) }}</td>
               <td class="px-3 py-2">{{ item.sector }}</td>
               <td class="px-3 py-2">{{ item.value }}</td>
             </tr>
@@ -125,6 +125,25 @@ const metricNameMap: Record<string, string> = {
   margin: '毛利率（%）',
 }
 
+const normalizeCompanyName = (value: string) => {
+  if (!value) return value
+  const suffixes = ['股份有限公司', '集团股份有限公司', '集团有限公司', '有限责任公司', '有限公司', '集团']
+  let result = value
+  for (const suffix of suffixes) {
+    if (result.endsWith(suffix)) {
+      result = result.slice(0, Math.max(1, result.length - suffix.length))
+      break
+    }
+  }
+  return result
+}
+
+const shortLabel = (value: string, max = 6) => {
+  if (!value) return value
+  const normalized = normalizeCompanyName(value)
+  return normalized.length > max ? `${normalized.slice(0, max)}...` : normalized
+}
+
 const updateSectors = (items: any[]) => {
   const values = Array.from(new Set(items.map((item) => String(item.sector || '')).filter(Boolean)))
   sectors.value = values
@@ -164,7 +183,10 @@ const loadData = async () => {
     yAxis: {
       type: 'category',
       data: names,
-      axisLabel: { color: '#064e3b' },
+      axisLabel: {
+        color: '#064e3b',
+        formatter: (value: string) => shortLabel(value),
+      },
       axisTick: { show: false },
     },
     series: [
@@ -191,6 +213,17 @@ const loadData = async () => {
       },
     ],
   })
+}
+
+const refreshAll = async () => {
+  const companyRes = await getCompanies()
+  const companies = Array.isArray(companyRes?.data?.items) ? companyRes.data.items : []
+  allCompanies.value = companies
+  companyOptions.value = companies.map((item: any) => item.company_name)
+  selectedCompanies.value = companyOptions.value.slice(0, 2)
+  await nextTick()
+  await loadData()
+  renderRadarChart()
 }
 
 const toggleCompany = (name: string) => {
@@ -299,16 +332,9 @@ const handleResize = () => {
 }
 
 onMounted(async () => {
-  const companyRes = await getCompanies()
-  const companies = Array.isArray(companyRes?.data?.items) ? companyRes.data.items : []
-  allCompanies.value = companies
-  companyOptions.value = companies.map((item: any) => item.company_name)
-  selectedCompanies.value = companyOptions.value.slice(0, 2)
-
-  await nextTick()
-  await loadData()
-  renderRadarChart()
+  await refreshAll()
   window.addEventListener('resize', handleResize)
+  window.addEventListener('data-refreshed', refreshAll)
 })
 
 watch(selectedCompanies, () => {
@@ -317,6 +343,7 @@ watch(selectedCompanies, () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('data-refreshed', refreshAll)
   barChart?.dispose()
   radarChart?.dispose()
   barChart = null

@@ -48,6 +48,17 @@ def init_db() -> None:
             )
             """
         )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS uploads (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                file_name TEXT NOT NULL,
+                stored_path TEXT NOT NULL,
+                raw_path TEXT NOT NULL,
+                upload_time TEXT NOT NULL
+            )
+            """
+        )
         conn.commit()
 
 
@@ -148,15 +159,121 @@ def get_default_seed_rows() -> list[dict]:
     ]
 
 
-def extract_seed_rows() -> list[dict]:
+def parse_number(raw: str) -> float:
+    cleaned = raw.replace(",", "").replace("，", "").strip()
+    try:
+        return float(cleaned)
+    except ValueError:
+        return 0.0
+
+
+def to_yi(value: float, unit: str | None) -> float:
+    if value <= 0:
+        return 0.0
+    unit = (unit or "").strip()
+    if "亿" in unit:
+        return value
+    if "万" in unit:
+        return round(value / 10000.0, 2)
+    # 默认按“元”处理
+    return round(value / 1e8, 2)
+
+
+def find_metric(patterns: list[str], text: str) -> float:
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if match:
+            value = parse_number(match.group(1))
+            unit = match.group(2) if match.lastindex and match.lastindex >= 2 else ""
+            value_yi = to_yi(value, unit)
+            if value_yi > 0:
+                return value_yi
+    return 0.0
+
+
+def find_percentage(patterns: list[str], text: str) -> float:
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if match:
+            value = parse_number(match.group(1))
+            # 百分比不做单位换算，仅在合理范围内返回
+            if 0 < value <= 100:
+                return value
+    return 0.0
+
+
+def detect_company_name(text: str) -> str:
+    match = re.search(r"([\u4e00-\u9fa5A-Za-z0-9\(\)（）]+?(?:股份有限公司|有限公司|集团))", text)
+    if match:
+        return match.group(1).strip()
+    return "未识别企业"
+
+
+def infer_sector(text: str) -> str:
+    compact = re.sub(r"\s+", "", text)
+    rules = [
+        ("整车+电池+光伏", ["新能源汽车", "整车", "汽车制造", "汽车业务"]),
+        ("动力电池+储能", ["动力电池", "电池系统", "电池业务", "储能电池"]),
+        ("逆变器+储能", ["逆变器", "储能系统", "储能业务"]),
+        ("光伏+硅料", ["硅料", "多晶硅", "硅片"]),
+        ("光伏", ["光伏", "组件", "电池片"]),
+        ("隔膜", ["隔膜"]),
+        ("动力+消费电池", ["消费电池", "圆柱电池", "小动力"]),
+        ("储能", ["储能"]),
+    ]
+    for sector, keywords in rules:
+        if any(kw in compact for kw in keywords):
+            return sector
+    return "新上传"
+
+
+def build_business_summary(sector: str, revenue: float, profit: float, margin: float) -> str:
+    sector = sector or "新上传"
+    templates = {
+        "逆变器+储能": "主营逆变器、储能系统及新能源电站解决方案。",
+        "动力电池+储能": "主营动力电池与储能电池，产品覆盖多应用场景。",
+        "整车+电池+光伏": "主营新能源汽车、动力电池与光伏相关业务。",
+        "光伏+硅料": "主营硅料与光伏制造环节，产业链一体化程度较高。",
+        "光伏": "主营光伏组件与电池片，聚焦高效产品与技术路线。",
+        "隔膜": "主营锂电池隔膜，受益于动力与储能需求增长。",
+        "动力+消费电池": "主营动力与消费电池业务，产品结构较为均衡。",
+        "储能": "主营储能系统及解决方案，业务覆盖电网侧与用户侧。",
+    }
+    base = templates.get(sector, "自动解析获得的财报指标与业务信息。")
+
+    parts: list[str] = []
+    if revenue > 0:
+        parts.append(f"营收约{revenue:.2f}亿元")
+    if profit > 0:
+        parts.append(f"净利润约{profit:.2f}亿元")
+    if margin > 0:
+        parts.append(f"毛利率约{margin:.2f}%")
+
+    if parts:
+        return f"{base} { '，'.join(parts) }。"
+    return f"{base} 自动解析：未识别到关键财报指标。"
+
+
+def build_risk_opportunity(margin: float) -> str:
+    if margin <= 0:
+        return "机会：关注行业需求回暖带来的修复；风险：毛利率未识别，建议人工复核。"
+    if margin >= 20:
+        return "机会：盈利能力较强，景气回升有望带来增量；风险：行业周期波动对毛利率的影响。"
+    if margin >= 10:
+        return "机会：结构优化可带来盈利改善；风险：成本上行与竞争加剧。"
+    return "机会：通过降本增效提升利润空间；风险：盈利能力偏弱与价格竞争。"
+
+
+def extract_seed_rows(pdf_path: Path | None = None) -> list[dict]:
     # 第一阶段先做稳定可控的半自动解析：
     # 用 pdfplumber 读取页面，再按企业标题做匹配，核心指标采用已校对口径入库。
     seed_rows: list[dict] = []
-    if not PDF_PATH.exists() or pdfplumber is None:
+    target_pdf = pdf_path or PDF_PATH
+    if not target_pdf.exists() or pdfplumber is None:
         return seed_rows
 
     page_texts: list[tuple[int, str]] = []
-    with pdfplumber.open(PDF_PATH) as pdf:
+    with pdfplumber.open(target_pdf) as pdf:
         for page_no, page in enumerate(pdf.pages, start=1):
             text = page.extract_text() or ""
             page_texts.append((page_no, text))
@@ -208,6 +325,72 @@ def extract_seed_rows() -> list[dict]:
                     }
                 )
 
+    if seed_rows:
+        unique = {row["company_name"]: row for row in seed_rows}
+        return list(unique.values())
+
+    # 通用解析：从全文中尝试提取公司名、营收、净利润、毛利率
+    full_text = "\n".join([t for _, t in page_texts])
+    company_name = detect_company_name(full_text)
+
+    revenue = find_metric(
+        [
+            r"营业收入[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+            r"营业总收入[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+        ],
+        full_text,
+    )
+    profit = find_metric(
+        [
+            r"净利润[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+            r"归母净利润[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+        ],
+        full_text,
+    )
+    margin = find_percentage(
+        [
+            r"毛利率[^\d]*([\d,]+\.?\d*)\s*(%|％|﹪|个百分点)?",
+        ],
+        full_text,
+    )
+
+    cost = find_metric(
+        [
+            r"营业成本[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+        ],
+        full_text,
+    )
+    gross_profit = find_metric(
+        [
+            r"毛利[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+            r"营业毛利[^\d]*([\d,]+\.?\d*)\s*(亿元|万?元)?",
+        ],
+        full_text,
+    )
+
+    if margin == 0.0 and revenue > 0:
+        if cost > 0:
+            margin = calc_margin(revenue, cost)
+        elif gross_profit > 0:
+            margin = round((gross_profit / revenue) * 100, 2)
+
+    sector = infer_sector(full_text)
+    if company_name != "未识别企业":
+        seed_rows.append(
+            {
+                "company_name": company_name,
+                "sector": sector,
+                "revenue": revenue,
+                "profit": profit,
+                "margin": margin,
+                "year": 2025,
+                "period": "前三季度",
+                "business_summary": build_business_summary(sector, revenue, profit, margin),
+                "risk_opportunity": build_risk_opportunity(margin),
+                "source_page": 1,
+            }
+        )
+
     unique = {row["company_name"]: row for row in seed_rows}
     return list(unique.values())
 
@@ -232,10 +415,16 @@ def seed_company_metrics(items: list[dict]) -> None:
 
 if __name__ == "__main__":
     init_db()
-    rows = extract_seed_rows()
+    force_default = bool(int(__import__("os").getenv("FORCE_DEFAULT_SEED", "0")))
+    rows = []
+    if not force_default:
+        rows = extract_seed_rows()
     if not rows:
         rows = get_default_seed_rows()
-        print("PDF 文本未命中预设标题，已回退到整理好的样例财报数据。")
+        if force_default:
+            print("已强制写入整理好的样例财报数据。")
+        else:
+            print("PDF 文本未命中预设标题，已回退到整理好的样例财报数据。")
 
     seed_company_metrics(rows)
     print(f"数据库初始化完成，已写入 {len(rows)} 条企业记录 -> {DB_PATH}")

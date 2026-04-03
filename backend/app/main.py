@@ -5,11 +5,14 @@ from datetime import datetime
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import BackgroundTasks, Depends, FastAPI, File, HTTPException, Query, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from .db import get_db
 from .rag_engine import ask_financial_question, build_vector_store
+from backend.scripts.sync_data import sync_data
+from backend.scripts.init_db import init_db
 from .schemas import AskRequest, CompareReportRequest, ReportRequest
 from .services.diagnosis_service import build_financial_diagnosis
 from .services.metrics_service import (
@@ -23,7 +26,9 @@ from .services.metrics_service import (
 BASE_DIR = Path(__file__).resolve().parents[2]
 FRONTEND_DIST_DIR = BASE_DIR / 'frontend' / 'dist'
 UPLOAD_DIR = BASE_DIR / 'data' / 'uploads'
+RAW_DIR = BASE_DIR / 'data' / 'raw'
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title='新能源财报智能体系统 API',
@@ -38,6 +43,12 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
+
+
+@app.on_event('startup')
+def ensure_db_ready() -> None:
+    # 启动时确保数据库表存在（包含 uploads）
+    init_db()
 
 DbDep = Annotated[sqlite3.Connection, Depends(get_db)]
 
@@ -131,6 +142,13 @@ def rag_rebuild() -> dict[str, str]:
     return {'message': '向量库重建完成'}
 
 
+@app.post('/api/data/refresh')
+def refresh_data(background_tasks: BackgroundTasks) -> dict:
+    # 为避免前端超时，改为后台执行解析入库。
+    background_tasks.add_task(sync_data)
+    return {'message': '已开始后台刷新，请稍后刷新图表页面查看最新数据。'}
+
+
 @app.post('/api/report')
 def generate_report(req: ReportRequest, db: DbDep) -> dict:
     company = fetch_company_by_name(db, req.company)
@@ -214,7 +232,7 @@ def compare_report(req: CompareReportRequest, db: DbDep) -> dict:
 
 
 @app.post('/api/knowledge/upload')
-async def upload_finance_pdf(file: UploadFile = File(...)) -> dict:
+async def upload_finance_pdf(db: DbDep, file: UploadFile = File(...)) -> dict:
     filename = file.filename or ''
     if not filename.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail='仅支持 PDF 文件上传。')
@@ -223,20 +241,72 @@ async def upload_finance_pdf(file: UploadFile = File(...)) -> dict:
     content = await file.read()
     save_path.write_bytes(content)
 
-    # 当前版本先返回基础记录，后续可接入真实 PDF 解析与向量化任务队列。
+    # 保存最新 PDF 到 raw 目录，避免覆盖锁文件导致权限问题。
+    safe_name = f"upload_{int(datetime.now().timestamp())}.pdf"
+    raw_path = RAW_DIR / safe_name
+    raw_path.write_bytes(content)
+    # 写入标记文件，供 sync_data 读取最新 PDF。
+    marker_path = RAW_DIR / 'latest_pdf_path.txt'
+    marker_path.write_text(str(raw_path), encoding='utf-8')
+
+    # 写入上传记录，便于前端展示与下载。
     company_name = filename.split('2025')[0].strip() or '未识别企业'
     now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     chunks = max(80, min(500, len(content) // 8000))
 
+    db.execute(
+        """
+        INSERT INTO uploads (file_name, stored_path, raw_path, upload_time)
+        VALUES (?, ?, ?, ?)
+        """,
+        (filename, str(save_path), str(raw_path), now_str),
+    )
+    db.commit()
+    upload_id = db.execute('SELECT last_insert_rowid()').fetchone()[0]
+
     return {
         'message': '上传成功',
         'item': {
-            'id': int(datetime.now().timestamp()),
+            'id': int(upload_id),
             'fileName': filename,
             'company': company_name,
             'uploadTime': now_str,
             'status': '解析中',
             'chunks': chunks,
             'savedPath': str(save_path),
+            'rawPath': str(raw_path),
         },
+        'nextStep': '请调用 /api/data/refresh 触发解析入库与向量库重建。',
     }
+
+
+@app.get('/api/knowledge/list')
+def list_uploads(db: DbDep) -> dict:
+    rows = db.execute(
+        "SELECT id, file_name, upload_time, stored_path, raw_path FROM uploads ORDER BY id DESC"
+    ).fetchall()
+    items = [
+        {
+            'id': row['id'],
+            'fileName': row['file_name'],
+            'uploadTime': row['upload_time'],
+            'storedPath': row['stored_path'],
+            'rawPath': row['raw_path'],
+        }
+        for row in rows
+    ]
+    return {'items': items}
+
+
+@app.get('/api/knowledge/file/{upload_id}')
+def get_upload_file(upload_id: int, db: DbDep) -> FileResponse:
+    row = db.execute(
+        "SELECT stored_path FROM uploads WHERE id = ?",
+        (upload_id,),
+    ).fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail='未找到文件记录。')
+    file_path = Path(row['stored_path'])
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail='文件不存在。')
+    return FileResponse(path=str(file_path), filename=file_path.name)

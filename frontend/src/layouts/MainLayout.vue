@@ -115,6 +115,7 @@ const menus = [
   { path: '/enterprise-detail', label: '企业详情', icon: '🏢' },
   { path: '/agent-room', label: '智能研判室', icon: '🤖' },
   { path: '/financial-analysis', label: '财务指标对比', icon: '📈' },
+  { path: '/data-upload', label: '财报上传', icon: '⬆️' },
 ]
 
 const route = useRoute()

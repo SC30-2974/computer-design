@@ -49,10 +49,30 @@ const avgMargin = computed(() => {
 })
 
 // 按赛道聚合营收，供饼图展示。
+const normalizeCompanyName = (value: string) => {
+  if (!value) return value
+  const suffixes = ['股份有限公司', '集团股份有限公司', '集团有限公司', '有限责任公司', '有限公司', '集团']
+  let result = value
+  for (const suffix of suffixes) {
+    if (result.endsWith(suffix)) {
+      result = result.slice(0, Math.max(1, result.length - suffix.length))
+      break
+    }
+  }
+  return result
+}
+
+const shortLabel = (value: string, max = 6) => {
+  if (!value) return value
+  const normalized = normalizeCompanyName(value)
+  return normalized.length > max ? `${normalized.slice(0, max)}...` : normalized
+}
+
 const buildSectorSeries = () => {
   const map = new Map<string, number>()
   companies.value.forEach((item) => {
-    const key = String(item.sector || '未分类')
+    const sector = String(item.sector || '未分类')
+    const key = sector === '新上传' ? shortLabel(String(item.company_name || '新上传')) : sector
     map.set(key, (map.get(key) || 0) + Number(item.revenue || 0))
   })
   return Array.from(map.entries()).map(([name, value]) => ({ name, value: Number(value.toFixed(2)) }))
@@ -105,17 +125,26 @@ const renderPie = () => {
 
 const handleResize = () => pieChart?.resize()
 
-onMounted(async () => {
+const loadCompanies = async () => {
   const { data } = await getCompanies()
   companies.value = Array.isArray(data?.items) ? data.items : []
-
   await nextTick()
   renderPie()
+}
+
+const handleDataRefresh = () => {
+  loadCompanies()
+}
+
+onMounted(async () => {
+  await loadCompanies()
   window.addEventListener('resize', handleResize)
+  window.addEventListener('data-refreshed', handleDataRefresh)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('data-refreshed', handleDataRefresh)
   pieChart?.dispose()
   pieChart = null
 })
