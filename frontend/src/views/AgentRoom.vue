@@ -6,10 +6,10 @@
         <span class="text-xs text-emerald-700">沉浸式问答</span>
       </div>
 
-      <div class="flex-1 overflow-hidden">
+      <div class="flex-1 overflow-hidden p-2 sm:p-3">
         <iframe
           src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
-          class="h-full w-full min-h-[calc(100vh-10rem)]"
+          class="h-full w-full min-h-[calc(100vh-12rem)] rounded-xl bg-white"
           frameborder="0"
           allow="microphone"
         ></iframe>
