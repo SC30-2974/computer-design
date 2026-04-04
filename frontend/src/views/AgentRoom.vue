@@ -1,15 +1,10 @@
 ﻿<template>
   <section class="min-h-[calc(100vh-4rem)] bg-transparent p-0 -mx-2 sm:-mx-4 lg:-mx-6 flex">
-    <div class="flex flex-1 flex-col overflow-hidden rounded-2xl bg-transparent">
-      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-300/10 px-4 py-3">
-        <h3 class="text-sm font-semibold text-emerald-900">Dify 智能研判室</h3>
-        <span class="text-xs text-emerald-700">沉浸式问答</span>
-      </div>
-
-      <div class="flex-1 overflow-visible p-2 pt-2 sm:p-3 sm:pt-2">
+    <div class="flex flex-1 flex-col overflow-hidden rounded-none bg-transparent">
+      <div class="flex-1 overflow-visible p-0">
         <iframe
           src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
-          class="-mt-3 h-[calc(100%+0.75rem)] w-full min-h-[calc(100vh-12.5rem)] rounded-xl bg-white"
+          class="h-[calc(100vh-4rem)] w-full rounded-none bg-white"
           frameborder="0"
           allow="microphone"
         ></iframe>
