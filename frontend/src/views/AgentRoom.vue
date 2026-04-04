@@ -1,6 +1,6 @@
 ﻿<template>
-  <section class="min-h-[calc(100vh-4rem)] rounded-3xl border border-emerald-300/30 bg-white/80 p-3 shadow-[0_16px_40px_rgba(16,185,129,0.22)] sm:p-4 -mx-2 sm:-mx-4 lg:-mx-6 flex">
-    <div class="flex flex-1 flex-col overflow-hidden rounded-2xl border border-emerald-300/25 bg-white/90">
+  <section class="min-h-[calc(100vh-4rem)] bg-transparent p-0 -mx-2 sm:-mx-4 lg:-mx-6 flex">
+    <div class="flex flex-1 flex-col overflow-hidden rounded-2xl bg-transparent">
       <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-300/10 px-4 py-3">
         <h3 class="text-sm font-semibold text-emerald-900">Dify 智能研判室</h3>
         <span class="text-xs text-emerald-700">沉浸式问答</span>
