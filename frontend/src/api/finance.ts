@@ -369,6 +369,10 @@ export const listUploads = async () => {
   return request.get('/api/knowledge/list')
 }
 
+export const deleteUpload = async (id: number) => {
+  return request.delete(`/api/knowledge/${id}`)
+}
+
 export const getUploadFileUrl = (id: number) => {
   return `${getApiBaseUrl()}/api/knowledge/file/${id}`
 }

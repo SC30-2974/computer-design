@@ -61,6 +61,32 @@ def format_source_page(page: object) -> str:
         return '待标注'
 
 
+def is_within_dir(path: Path, root: Path) -> bool:
+    try:
+        path.resolve().relative_to(root.resolve())
+        return True
+    except Exception:
+        return False
+
+
+def safe_unlink(path_text: str) -> bool:
+    if not path_text:
+        return False
+
+    try:
+        path = Path(path_text)
+        if not path.exists() or not path.is_file():
+            return False
+
+        if not any(is_within_dir(path, root) for root in (UPLOAD_DIR, RAW_DIR)):
+            return False
+
+        path.unlink()
+        return True
+    except Exception:
+        return False
+
+
 @app.get('/api/health')
 def health() -> dict[str, str]:
     return {'status': 'ok'}
@@ -298,10 +324,56 @@ def list_uploads(db: DbDep) -> dict:
     return {'items': items}
 
 
+@app.delete('/api/knowledge/{upload_id}')
+def delete_upload(upload_id: int, background_tasks: BackgroundTasks, db: DbDep) -> dict:
+    row = db.execute(
+        """
+        SELECT id, file_name, stored_path, raw_path
+        FROM uploads
+        WHERE id = ?
+        """,
+        (upload_id,),
+    ).fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail='未找到上传记录。')
+
+    stored_path = str(row['stored_path'] or '')
+    raw_path = str(row['raw_path'] or '')
+
+    stored_refs = db.execute(
+        "SELECT COUNT(1) FROM uploads WHERE stored_path = ? AND id <> ?",
+        (stored_path, upload_id),
+    ).fetchone()[0]
+    raw_refs = db.execute(
+        "SELECT COUNT(1) FROM uploads WHERE raw_path = ? AND id <> ?",
+        (raw_path, upload_id),
+    ).fetchone()[0]
+
+    db.execute("DELETE FROM uploads WHERE id = ?", (upload_id,))
+    db.commit()
+
+    removed_files: list[str] = []
+    if stored_path and int(stored_refs) == 0 and safe_unlink(stored_path):
+        removed_files.append(stored_path)
+    if raw_path and int(raw_refs) == 0 and safe_unlink(raw_path):
+        removed_files.append(raw_path)
+
+    background_tasks.add_task(sync_data)
+
+    return {
+        'message': '删除成功，已开始后台刷新数据。',
+        'deleted': {
+            'id': upload_id,
+            'fileName': row['file_name'],
+        },
+        'removedFiles': removed_files,
+    }
+
+
 @app.get('/api/knowledge/file/{upload_id}')
 def get_upload_file(upload_id: int, db: DbDep) -> FileResponse:
     row = db.execute(
-        "SELECT stored_path FROM uploads WHERE id = ?",
+        "SELECT stored_path, file_name FROM uploads WHERE id = ?",
         (upload_id,),
     ).fetchone()
     if not row:
@@ -309,4 +381,4 @@ def get_upload_file(upload_id: int, db: DbDep) -> FileResponse:
     file_path = Path(row['stored_path'])
     if not file_path.exists():
         raise HTTPException(status_code=404, detail='文件不存在。')
-    return FileResponse(path=str(file_path), filename=file_path.name)
+    return FileResponse(path=str(file_path), filename=row['file_name'])
