@@ -306,30 +306,13 @@ export const downloadTextFile = (filename: string, content: string) => {
   URL.revokeObjectURL(url)
 }
 
-export const downloadPdfFromText = (title: string, content: string) => {
-  const escaped = content
+const escapeHtml = (value: string) =>
+  value
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/\n/g, '<br/>')
 
-  const html = `<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <title>${title}</title>
-  <style>
-    body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; padding: 24px; color: #0f172a; }
-    h1 { font-size: 22px; margin-bottom: 14px; }
-    .content { line-height: 1.8; font-size: 14px; white-space: normal; }
-  </style>
-</head>
-<body>
-  <h1>${title}</h1>
-  <div class="content">${escaped}</div>
-</body>
-</html>`
-
+const printHtml = (html: string) => {
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const frame = document.createElement('iframe')
@@ -351,6 +334,129 @@ export const downloadPdfFromText = (title: string, content: string) => {
   }
 
   frame.src = url
+}
+
+export const downloadPdfFromText = (title: string, content: string) => {
+  const escaped = escapeHtml(content).replace(/\n/g, '<br/>')
+
+  const html = `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>${title}</title>
+  <style>
+    body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; padding: 24px; color: #0f172a; }
+    h1 { font-size: 22px; margin-bottom: 14px; }
+    .content { line-height: 1.8; font-size: 14px; white-space: normal; }
+  </style>
+</head>
+<body>
+  <h1>${title}</h1>
+  <div class="content">${escaped}</div>
+</body>
+</html>`
+
+  printHtml(html)
+}
+
+export const downloadPdfTable = (title: string, columns: string[], rows: string[][]) => {
+  const thead = `<tr>${columns
+    .map((col) => `<th>${escapeHtml(col)}</th>`)
+    .join('')}</tr>`
+
+  const tbody = rows
+    .map(
+      (row) =>
+        `<tr>${row
+          .map((cell) => `<td>${escapeHtml(cell)}</td>`)
+          .join('')}</tr>`,
+    )
+    .join('')
+
+  const now = new Date()
+  const timestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(
+    2,
+    '0',
+  )} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+
+  const html = `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>${escapeHtml(title)}</title>
+  <style>
+    @page { size: A4 portrait; margin: 14mm 12mm; }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+    .report {
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .header {
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: #fff;
+    }
+    .title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .meta {
+      margin-top: 6px;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+    thead th {
+      padding: 11px 10px;
+      text-align: left;
+      background: #e0f2fe;
+      color: #0c4a6e;
+      border-bottom: 1px solid #bae6fd;
+      font-weight: 700;
+    }
+    tbody td {
+      padding: 10px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #0f172a;
+      word-break: break-word;
+    }
+    tbody tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="report">
+    <div class="header">
+      <h1 class="title">${escapeHtml(title)}</h1>
+      <div class="meta">导出时间：${timestamp}</div>
+    </div>
+    <table>
+      <thead>${thead}</thead>
+      <tbody>${tbody}</tbody>
+    </table>
+  </div>
+</body>
+</html>`
+
+  printHtml(html)
 }
 
 export const uploadFinancePdf = async (file: File) => {

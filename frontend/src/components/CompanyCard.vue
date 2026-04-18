@@ -1,19 +1,19 @@
-<template>
-  <div class="rounded-3xl border border-slate-800 bg-slate-900/60 p-5">
+﻿<template>
+  <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/72 p-5">
     <div class="mb-2 text-xs uppercase tracking-[0.24em] text-cyan-300">{{ company.sector }}</div>
-    <div class="text-2xl font-semibold text-white">{{ company.company_name }}</div>
+    <div class="text-2xl font-semibold text-cyan-50">{{ company.company_name }}</div>
     <div class="mt-4 grid grid-cols-3 gap-3 text-sm">
-      <div class="rounded-2xl bg-slate-950/60 p-3">
-        <div class="text-slate-400">营收</div>
-        <div class="mt-1 text-lg font-semibold text-white">{{ company.revenue }}</div>
+      <div class="rounded-2xl bg-cyan-950/65 p-3">
+        <div class="text-cyan-300">钀ユ敹</div>
+        <div class="mt-1 text-lg font-semibold text-cyan-50">{{ company.revenue }}</div>
       </div>
-      <div class="rounded-2xl bg-slate-950/60 p-3">
-        <div class="text-slate-400">净利润</div>
-        <div class="mt-1 text-lg font-semibold text-white">{{ company.profit }}</div>
+      <div class="rounded-2xl bg-cyan-950/65 p-3">
+        <div class="text-cyan-300">鍑€鍒╂鼎</div>
+        <div class="mt-1 text-lg font-semibold text-cyan-50">{{ company.profit }}</div>
       </div>
-      <div class="rounded-2xl bg-slate-950/60 p-3">
-        <div class="text-slate-400">毛利率</div>
-        <div class="mt-1 text-lg font-semibold text-white">{{ company.margin }}%</div>
+      <div class="rounded-2xl bg-cyan-950/65 p-3">
+        <div class="text-cyan-300">姣涘埄鐜?/div>
+        <div class="mt-1 text-lg font-semibold text-cyan-50">{{ company.margin }}%</div>
       </div>
     </div>
   </div>
@@ -24,3 +24,6 @@ defineProps<{
   company: Record<string, any>
 }>()
 </script>
+
+
+

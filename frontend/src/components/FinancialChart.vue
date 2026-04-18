@@ -1,13 +1,13 @@
 ﻿<template>
-  <div class="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-glow">
+  <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6 shadow-glow">
     <div class="mb-4 flex items-center justify-between gap-4">
       <div>
-        <h3 class="text-xl font-semibold text-white">财务指标横向对比</h3>
-        <p class="mt-1 text-sm text-slate-400">基于 2025 年前三季度财报数据</p>
+        <h3 class="text-xl font-semibold text-cyan-50">财务指标横向对比</h3>
+        <p class="mt-1 text-sm text-cyan-300">基于 2025 年前三季度财报数据</p>
       </div>
       <select
         v-model="metric"
-        class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200"
+        class="rounded-xl border border-slate-700 bg-cyan-950/70 px-3 py-2 text-sm text-cyan-200"
         @change="loadChart"
       >
         <option value="revenue">营收</option>
@@ -89,7 +89,7 @@ const loadChart = async () => {
             borderRadius: [12, 12, 0, 0],
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               { offset: 0, color: '#22d3ee' },
-              { offset: 1, color: '#0f766e' },
+              { offset: 1, color: '#0ea5e9' },
             ]),
             shadowBlur: 18,
             shadowColor: 'rgba(34, 211, 238, 0.35)',
@@ -116,3 +116,8 @@ onBeforeUnmount(() => {
   chart = null
 })
 </script>
+
+
+
+
+

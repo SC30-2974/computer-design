@@ -1,27 +1,43 @@
 ﻿<template>
-  <section class="space-y-6">
+  <section class="flex min-h-full flex-col gap-6">
     <div class="grid gap-4 md:grid-cols-3">
-      <article class="rounded-2xl border border-emerald-300/30 bg-white/85 p-5 shadow-[0_12px_30px_rgba(16,185,129,0.18)]">
-        <p class="text-xs uppercase tracking-widest text-emerald-300">收录企业数</p>
-        <p class="mt-3 text-3xl font-semibold text-emerald-900">{{ totalCompanies }}</p>
+      <article class="rounded-2xl border border-cyan-500/30 bg-slate-950/75 p-5 shadow-[0_12px_30px_rgba(56,189,248,0.18)]">
+        <p class="text-xs uppercase tracking-widest text-cyan-300">收录企业数</p>
+        <p class="mt-3 text-3xl font-semibold text-cyan-100">{{ totalCompanies }}</p>
       </article>
-      <article class="rounded-2xl border border-emerald-300/30 bg-white/85 p-5 shadow-[0_12px_30px_rgba(16,185,129,0.18)]">
-        <p class="text-xs uppercase tracking-widest text-emerald-300">前三季度总营收</p>
-        <p class="mt-3 text-3xl font-semibold text-emerald-900">{{ totalRevenue.toLocaleString() }} 亿元</p>
+      <article class="rounded-2xl border border-cyan-500/30 bg-slate-950/75 p-5 shadow-[0_12px_30px_rgba(56,189,248,0.18)]">
+        <p class="text-xs uppercase tracking-widest text-cyan-300">前三季度总营收</p>
+        <p class="mt-3 text-3xl font-semibold text-cyan-100">{{ totalRevenue.toLocaleString() }} 亿元</p>
       </article>
-      <article class="rounded-2xl border border-emerald-300/30 bg-white/85 p-5 shadow-[0_12px_30px_rgba(16,185,129,0.18)]">
-        <p class="text-xs uppercase tracking-widest text-emerald-300">平均毛利率</p>
-        <p class="mt-3 text-3xl font-semibold text-emerald-900">{{ avgMargin.toFixed(2) }}%</p>
+      <article class="rounded-2xl border border-cyan-500/30 bg-slate-950/75 p-5 shadow-[0_12px_30px_rgba(56,189,248,0.18)]">
+        <p class="text-xs uppercase tracking-widest text-cyan-300">平均毛利率</p>
+        <p class="mt-3 text-3xl font-semibold text-cyan-100">{{ avgMargin.toFixed(2) }}%</p>
       </article>
     </div>
 
-    <div class="rounded-3xl border border-emerald-300/25 bg-white/85 p-6">
-      <div class="mb-4 flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-emerald-900">新能源各赛道营收占比</h3>
-        <p class="text-xs text-emerald-700">按赛道聚合企业营收（亿元）</p>
+    <div class="grid gap-6 lg:grid-cols-3">
+      <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/58 p-6 lg:col-span-3">
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-cyan-100">新能源各赛道营收占比</h3>
+          <p class="text-sm text-cyan-300">按赛道聚合企业营收（亿元）</p>
+        </div>
+        <div ref="pieRef" class="h-[340px] w-full lg:h-[410px]"></div>
       </div>
-      <div ref="pieRef" class="h-[300px] w-full sm:h-[360px] lg:h-[460px]"></div>
+
+      <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/58 p-6 lg:col-span-3">
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-cyan-100">营收-净利润分布</h3>
+        </div>
+        <div ref="scatterRef" class="h-[520px] w-full lg:h-[680px]"></div>
+      </div>
     </div>
+
+    <section class="rounded-3xl border border-cyan-500/30 bg-slate-950/58 p-1">
+      <div class="px-5 pt-5">
+        <h3 class="text-lg font-semibold text-cyan-100">财务指标对比</h3>
+      </div>
+      <FinancialAnalysisView />
+    </section>
   </section>
 </template>
 
@@ -29,9 +45,12 @@
 import * as echarts from 'echarts'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { getCompanies } from '../api/finance'
+import FinancialAnalysisView from './FinancialAnalysis.vue'
 
 const pieRef = ref<HTMLDivElement | null>(null)
+const scatterRef = ref<HTMLDivElement | null>(null)
 let pieChart: echarts.ECharts | null = null
+let scatterChart: echarts.ECharts | null = null
 
 const companies = ref<any[]>([])
 
@@ -78,6 +97,17 @@ const buildSectorSeries = () => {
   return Array.from(map.entries()).map(([name, value]) => ({ name, value: Number(value.toFixed(2)) }))
 }
 
+const buildScatterData = () =>
+  companies.value.map((item) => {
+    const revenue = Number(item.revenue || 0)
+    const profit = Number(item.profit || 0)
+    const margin = Number(item.margin || 0)
+    return {
+      name: shortLabel(String(item.company_name || '未命名企业')),
+      value: [revenue, profit, Math.max(12, margin * 2.2 + 12), margin],
+    }
+  })
+
 const renderPie = () => {
   if (!pieRef.value) return
   if (!pieChart) {
@@ -93,29 +123,33 @@ const renderPie = () => {
       formatter: '{b}<br/>营收：{c} 亿元 ({d}%)',
     },
     legend: {
-      bottom: 12,
-      textStyle: { color: '#065f46' },
+      show: false,
     },
     series: [
       {
         name: '赛道营收占比',
         type: 'pie',
-        radius: ['38%', '70%'],
-        center: ['50%', '45%'],
+        radius: ['60%', '90%'],
+        center: ['50%', '53%'],
+        avoidLabelOverlap: true,
         itemStyle: {
-          borderColor: '#d1fae5',
+          borderColor: '#082f49',
           borderWidth: 2,
           borderRadius: 8,
         },
         label: {
-          color: '#065f46',
+          color: '#dbeafe',
+          fontSize: 15,
+          fontWeight: 600,
           formatter: '{b}\n{d}%',
         },
         labelLine: {
-          lineStyle: { color: '#6ee7b7' },
+          lineStyle: { color: '#22d3ee' },
+          length: 18,
+          length2: 14,
         },
         data: pieData,
-        color: ['#10b981', '#34d399', '#6ee7b7', '#2dd4bf', '#4ade80', '#22c55e'],
+        color: ['#38bdf8', '#7dd3fc', '#22d3ee', '#0ea5e9', '#60a5fa', '#0284c7'],
         animationDuration: 1000,
         animationEasing: 'cubicOut',
       },
@@ -123,30 +157,119 @@ const renderPie = () => {
   })
 }
 
-const handleResize = () => pieChart?.resize()
+const renderScatter = () => {
+  if (!scatterRef.value) return
+  if (!scatterChart) {
+    scatterChart = echarts.init(scatterRef.value)
+  }
+  // 关键修正：卡片尺寸变化后强制同步到实例，避免图表挤在左上角。
+  scatterChart.resize({
+    width: scatterRef.value.clientWidth,
+    height: scatterRef.value.clientHeight,
+  })
+
+  const rows = buildScatterData()
+
+  scatterChart.setOption({
+    backgroundColor: 'transparent',
+    grid: { top: 76, right: 36, bottom: 96, left: 100 },
+    tooltip: {
+      trigger: 'item',
+      formatter: (params: any) => {
+        const [revenue, profit, _size, margin] = params.value
+        return `${params.name}<br/>营收：${revenue} 亿元<br/>净利润：${profit} 亿元<br/>毛利率：${Number(margin).toFixed(2)}%`
+      },
+    },
+    xAxis: {
+      name: '营收（亿元）',
+      nameLocation: 'middle',
+      nameGap: 52,
+      nameTextStyle: { color: '#a5f3fc', fontSize: 18, fontWeight: 700 },
+      axisLabel: { color: '#a5f3fc', fontSize: 15, fontWeight: 600 },
+      axisLine: { lineStyle: { color: 'rgba(34,211,238,0.4)' } },
+      splitLine: { lineStyle: { color: 'rgba(34,211,238,0.18)' } },
+    },
+    yAxis: {
+      name: '净利润（亿元）',
+      nameLocation: 'middle',
+      nameGap: 64,
+      nameRotate: 90,
+      nameTextStyle: { color: '#a5f3fc', fontSize: 18, fontWeight: 700 },
+      axisLabel: { color: '#a5f3fc', fontSize: 15, fontWeight: 600 },
+      axisLine: { lineStyle: { color: 'rgba(34,211,238,0.4)' } },
+      splitLine: { lineStyle: { color: 'rgba(34,211,238,0.18)' } },
+    },
+    series: [
+      {
+        type: 'scatter',
+        data: rows,
+        symbolSize: (value: number[]) => value[2],
+        itemStyle: {
+          color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
+            { offset: 0, color: '#67e8f9' },
+            { offset: 1, color: '#0284c7' },
+          ]),
+          shadowBlur: 20,
+          shadowColor: 'rgba(34,211,238,0.45)',
+        },
+      },
+    ],
+    animationDuration: 900,
+  })
+  scatterChart.resize({
+    width: scatterRef.value.clientWidth,
+    height: scatterRef.value.clientHeight,
+  })
+}
+
+const renderAllCharts = () => {
+  renderPie()
+  renderScatter()
+}
+
+const handleResize = () => {
+  pieChart?.resize()
+  scatterChart?.resize()
+}
 
 const loadCompanies = async () => {
   const { data } = await getCompanies()
   companies.value = Array.isArray(data?.items) ? data.items : []
   await nextTick()
-  renderPie()
+  renderAllCharts()
 }
 
 const handleDataRefresh = () => {
   loadCompanies()
 }
 
+const handleStorageRefresh = (event: StorageEvent) => {
+  if (event.key === 'dataRefreshAt') {
+    loadCompanies()
+  }
+}
+
 onMounted(async () => {
   await loadCompanies()
   window.addEventListener('resize', handleResize)
   window.addEventListener('data-refreshed', handleDataRefresh)
+  window.addEventListener('storage', handleStorageRefresh)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('data-refreshed', handleDataRefresh)
+  window.removeEventListener('storage', handleStorageRefresh)
   pieChart?.dispose()
+  scatterChart?.dispose()
   pieChart = null
+  scatterChart = null
 })
 </script>
+
+
+
+
+
+
 

@@ -1,60 +1,60 @@
 ﻿<template>
-  <section class="space-y-6 rounded-3xl border border-emerald-300/25 bg-white/85 p-6">
+  <section class="min-h-[calc(100vh-9rem)] space-y-6 rounded-3xl border border-cyan-500/30 bg-slate-950/75 p-6">
     <div>
-      <h3 class="text-lg font-semibold text-emerald-900">财报数据上传</h3>
-      <p class="mt-1 text-sm text-emerald-700/80">
+      <h3 class="text-lg font-semibold text-cyan-100">财报数据上传</h3>
+      <p class="mt-1 text-sm text-cyan-300/80">
         上传新的企业财报 PDF 后，会自动解析入库并刷新图表数据。
       </p>
     </div>
 
-    <div class="rounded-2xl border border-emerald-300/30 bg-emerald-50/60 p-5">
+    <div class="rounded-2xl border border-cyan-500/30 bg-cyan-950/60 p-5">
       <input ref="fileInput" type="file" accept="application/pdf" class="hidden" @change="handleFileChange" />
       <button
         type="button"
-        class="inline-flex items-center rounded-xl border border-emerald-300/60 bg-white px-4 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50"
+        class="inline-flex items-center rounded-xl border border-cyan-500/45 bg-slate-950/78 px-4 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-950/70"
         :disabled="uploading || deletingId !== null"
         @click="triggerUpload"
       >
         {{ uploading ? '上传中...' : '上传最新财报 PDF' }}
       </button>
 
-      <p v-if="statusText" class="mt-3 text-sm text-emerald-800">{{ statusText }}</p>
+      <p v-if="statusText" class="mt-3 text-sm text-cyan-200">{{ statusText }}</p>
       <div
         v-if="isRefreshingData"
-        class="mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/40 bg-white/90 px-3 py-1.5 text-xs font-medium text-emerald-800"
+        class="mt-3 inline-flex items-center gap-2 rounded-full border border-cyan-500/35 bg-slate-950/78 px-3 py-1.5 text-xs font-medium text-cyan-200"
       >
-        <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-500"></span>
+        <span class="h-2 w-2 animate-pulse rounded-full bg-cyan-400"></span>
         <span>数据刷新中，完成后会自动同步到其他页面。</span>
       </div>
     </div>
 
-    <div class="rounded-2xl border border-emerald-300/25 bg-white p-5">
+    <div class="rounded-2xl border border-cyan-500/30 bg-slate-950/78 p-5">
       <div class="mb-3 flex items-center justify-between">
-        <h4 class="text-sm font-semibold text-emerald-900">上传记录</h4>
+        <h4 class="text-sm font-semibold text-cyan-100">上传记录</h4>
         <button
-          class="text-xs text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+          class="text-xs text-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="uploading || deletingId !== null || isRefreshingData"
           @click="fetchUploads"
         >
           刷新记录
         </button>
       </div>
-      <div class="overflow-x-auto rounded-xl border border-emerald-300/20">
+      <div class="overflow-x-auto rounded-xl border border-cyan-500/20">
         <table class="min-w-full text-sm">
-          <thead class="bg-emerald-50 text-emerald-800">
+          <thead class="bg-cyan-950/70 text-cyan-200">
             <tr>
               <th class="px-3 py-2 text-left">文件名</th>
               <th class="px-3 py-2 text-left">上传时间</th>
               <th class="px-3 py-2 text-left">操作</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-emerald-300/15 bg-white text-emerald-900">
+          <tbody class="divide-y divide-cyan-800/30 bg-slate-950/78 text-cyan-100">
             <tr v-for="item in uploads" :key="item.id">
               <td class="px-3 py-2">{{ item.fileName }}</td>
               <td class="px-3 py-2">{{ item.uploadTime }}</td>
               <td class="px-3 py-2">
                 <div class="flex items-center gap-3">
-                  <button class="text-emerald-700 hover:underline" @click="openUpload(item.id)">打开 PDF</button>
+                  <button class="text-cyan-300 hover:underline" @click="openUpload(item.id)">打开 PDF</button>
                   <button
                     class="text-rose-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
                     :disabled="uploading || isRefreshingData || deletingId === item.id"
@@ -66,15 +66,15 @@
               </td>
             </tr>
             <tr v-if="uploads.length === 0">
-              <td colspan="3" class="px-3 py-6 text-center text-emerald-600/70">暂无上传记录</td>
+              <td colspan="3" class="px-3 py-6 text-center text-cyan-400/70">暂无上传记录</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="rounded-2xl border border-emerald-300/25 bg-white p-5 text-sm text-emerald-800/80">
-      <p class="font-medium text-emerald-900">上传说明</p>
+    <div class="rounded-2xl border border-cyan-500/30 bg-slate-950/78 p-5 text-sm text-cyan-200/80">
+      <p class="font-medium text-cyan-100">上传说明</p>
       <ul class="mt-2 list-disc pl-5">
         <li>仅支持 PDF 文件。</li>
         <li>上传成功后会自动触发解析与入库。</li>
@@ -241,3 +241,8 @@ onMounted(() => {
   fetchUploads()
 })
 </script>
+
+
+
+
+

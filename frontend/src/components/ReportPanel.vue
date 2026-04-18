@@ -1,21 +1,21 @@
 ﻿<template>
-  <div class="rounded-3xl border border-slate-800 bg-slate-950/80 p-6">
+  <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6">
     <div class="mb-4 flex items-center justify-between">
-      <h3 class="text-xl font-semibold text-white">分析报告</h3>
-      <select v-model="selected" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200">
+      <h3 class="text-xl font-semibold text-cyan-50">分析报告</h3>
+      <select v-model="selected" class="rounded-xl border border-cyan-500/45 bg-cyan-950/70 px-3 py-2 text-sm text-cyan-200">
         <option v-for="item in companies" :key="item.company_name" :value="item.company_name">
           {{ item.company_name }}
         </option>
       </select>
     </div>
 
-    <button class="rounded-2xl bg-emerald-400 px-5 py-3 font-medium text-slate-950" @click="loadReport">生成报告</button>
+    <button class="rounded-2xl bg-cyan-600 px-5 py-3 font-medium text-white hover:bg-cyan-500" @click="loadReport">生成报告</button>
 
     <div v-if="errorMessage" class="mt-3 rounded-xl border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
       {{ errorMessage }}
     </div>
 
-    <div class="mt-4 min-h-[220px] whitespace-pre-wrap rounded-2xl bg-slate-900 p-4 text-sm text-slate-200">{{ report }}</div>
+    <div class="mt-4 min-h-[220px] whitespace-pre-wrap rounded-2xl bg-cyan-950/70 p-4 text-sm text-cyan-200">{{ report }}</div>
   </div>
 </template>
 
@@ -49,3 +49,7 @@ onMounted(async () => {
   }
 })
 </script>
+
+
+
+

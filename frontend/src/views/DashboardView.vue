@@ -1,12 +1,12 @@
-<template>
-  <main class="min-h-screen px-6 py-8 text-slate-100 lg:px-10">
+﻿<template>
+  <main class="min-h-screen px-6 py-8 text-cyan-100 lg:px-10">
     <section class="mx-auto max-w-7xl space-y-8">
-      <header class="flex flex-col gap-3 rounded-[32px] border border-cyan-500/20 bg-slate-950/60 p-8 shadow-glow lg:flex-row lg:items-end lg:justify-between">
+      <header class="flex flex-col gap-3 rounded-[32px] border border-cyan-500/20 bg-cyan-950/65 p-8 shadow-glow lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div class="text-xs uppercase tracking-[0.36em] text-cyan-300">新能源财报智能体系统</div>
-          <h1 class="mt-3 text-4xl font-semibold text-white">从 MVP 升级为面向国赛的一体化财报智能分析平台</h1>
-          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-400">
-            真实 RAG、自动化财报解析流水线、结构化财务诊断、专业可视化大屏。
+          <div class="text-xs uppercase tracking-[0.36em] text-cyan-300">鏂拌兘婧愯储鎶ユ櫤鑳戒綋绯荤粺</div>
+          <h1 class="mt-3 text-4xl font-semibold text-cyan-50">浠?MVP 鍗囩骇涓洪潰鍚戝浗璧涚殑涓€浣撳寲璐㈡姤鏅鸿兘鍒嗘瀽骞冲彴</h1>
+          <p class="mt-3 max-w-3xl text-sm leading-7 text-cyan-300">
+            鐪熷疄 RAG銆佽嚜鍔ㄥ寲璐㈡姤瑙ｆ瀽娴佹按绾裤€佺粨鏋勫寲璐㈠姟璇婃柇銆佷笓涓氬彲瑙嗗寲澶у睆銆?
           </p>
         </div>
       </header>
@@ -30,3 +30,6 @@ import FinancialChart from '../components/FinancialChart.vue'
 import RagChatPanel from '../components/RagChatPanel.vue'
 import ReportPanel from '../components/ReportPanel.vue'
 </script>
+
+
+

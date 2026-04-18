@@ -3,7 +3,6 @@ import MainLayout from '../layouts/MainLayout.vue'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import AgentRoom from '../views/AgentRoom.vue'
-import FinancialAnalysis from '../views/FinancialAnalysis.vue'
 import EnterpriseDetail from '../views/EnterpriseDetail.vue'
 import DataUpload from '../views/DataUpload.vue'
 
@@ -28,7 +27,7 @@ const router = createRouter({
           path: 'dashboard',
           name: 'dashboard',
           component: Dashboard,
-          meta: { title: '宏观行业大屏' },
+          meta: { title: '行业对比大屏' },
         },
         {
           path: 'agent-room',
@@ -39,8 +38,7 @@ const router = createRouter({
         {
           path: 'financial-analysis',
           name: 'financial-analysis',
-          component: FinancialAnalysis,
-          meta: { title: '财务指标对比' },
+          redirect: '/dashboard',
         },
         {
           path: 'enterprise-detail',

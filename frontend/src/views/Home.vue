@@ -1,5 +1,5 @@
 ﻿<template>
-  <section class="home-wrap relative flex min-h-[calc(100vh-12rem)] flex-col lg:min-h-[calc(100vh-10rem)]">
+  <section class="home-wrap relative flex min-h-screen flex-col">
     <div class="hero-glow"></div>
 
     <div class="ring-stage" aria-hidden="true">
@@ -20,45 +20,6 @@
       </div>
     </div>
 
-    <div class="relative z-[1] pb-2 pt-4">
-      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <RouterLink
-          to="/dashboard"
-          class="feature-card rounded-2xl border border-emerald-300/30 bg-white/90 p-5 transition hover:-translate-y-1 hover:shadow-[0_16px_30px_rgba(16,185,129,0.2)]"
-        >
-          <p class="mb-3 text-xs font-medium tracking-[0.16em] text-emerald-600">全局总览</p>
-          <h4 class="mt-2 text-lg font-semibold text-emerald-900">宏观行业大屏</h4>
-          <p class="mt-2 text-sm text-emerald-800/80">查看企业总量、总营收和赛道占比。</p>
-        </RouterLink>
-
-        <RouterLink
-          to="/agent-room"
-          class="feature-card rounded-2xl border border-emerald-300/30 bg-white/90 p-5 transition hover:-translate-y-1 hover:shadow-[0_16px_30px_rgba(16,185,129,0.2)]"
-        >
-          <p class="mb-3 text-xs font-medium tracking-[0.16em] text-emerald-600">智能交互</p>
-          <h4 class="mt-2 text-lg font-semibold text-emerald-900">智能研判室</h4>
-          <p class="mt-2 text-sm text-emerald-800/80">通过 Dify 智能体进行沉浸式问答。</p>
-        </RouterLink>
-
-        <RouterLink
-          to="/financial-analysis"
-          class="feature-card rounded-2xl border border-emerald-300/30 bg-white/90 p-5 transition hover:-translate-y-1 hover:shadow-[0_16px_30px_rgba(16,185,129,0.2)]"
-        >
-          <p class="mb-3 text-xs font-medium tracking-[0.16em] text-emerald-600">数据洞察</p>
-          <h4 class="mt-2 text-lg font-semibold text-emerald-900">财务指标对比</h4>
-          <p class="mt-2 text-sm text-emerald-800/80">横向对比营收、净利润和毛利率表现。</p>
-        </RouterLink>
-
-        <RouterLink
-          to="/enterprise-detail"
-          class="feature-card rounded-2xl border border-emerald-300/30 bg-white/90 p-5 transition hover:-translate-y-1 hover:shadow-[0_16px_30px_rgba(16,185,129,0.2)]"
-        >
-          <p class="mb-3 text-xs font-medium tracking-[0.16em] text-emerald-600">深度研判</p>
-          <h4 class="mt-2 text-lg font-semibold text-emerald-900">企业详情</h4>
-          <p class="mt-2 text-sm text-emerald-800/80">聚焦单企业指标、诊断结论与样本对比分析。</p>
-        </RouterLink>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -79,7 +40,7 @@
   width: min(96vw, 1180px);
   height: min(96vw, 1180px);
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.12) 0%, rgba(52, 211, 153, 0.05) 45%, rgba(52, 211, 153, 0) 72%);
+  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0.05) 45%, rgba(56, 189, 248, 0) 72%);
   filter: blur(12px);
   pointer-events: none;
   z-index: 0;
@@ -100,7 +61,7 @@
   position: absolute;
   inset: 12%;
   border-radius: 999px;
-  background: radial-gradient(circle at 48% 45%, rgba(52, 211, 153, 0.14) 0%, rgba(52, 211, 153, 0.05) 40%, rgba(52, 211, 153, 0) 75%);
+  background: radial-gradient(circle at 48% 45%, rgba(56, 189, 248, 0.14) 0%, rgba(56, 189, 248, 0.05) 40%, rgba(56, 189, 248, 0) 75%);
   filter: blur(6px);
   animation: halo-breathe 6.5s ease-in-out infinite;
 }
@@ -113,20 +74,20 @@
   background:
     repeating-conic-gradient(
       from 0deg,
-      rgba(52, 211, 153, 0.34) 0deg 12deg,
-      rgba(52, 211, 153, 0.12) 12deg 17deg,
-      rgba(52, 211, 153, 0) 17deg 26deg
+      rgba(56, 189, 248, 0.34) 0deg 12deg,
+      rgba(56, 189, 248, 0.12) 12deg 17deg,
+      rgba(56, 189, 248, 0) 17deg 26deg
     ),
     repeating-conic-gradient(
       from 96deg,
-      rgba(52, 211, 153, 0.28) 0deg 8deg,
-      rgba(52, 211, 153, 0) 8deg 24deg
+      rgba(56, 189, 248, 0.28) 0deg 8deg,
+      rgba(56, 189, 248, 0) 8deg 24deg
     );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-thickness)), #000 calc(100% - (var(--ring-thickness) - 1px)));
   mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-thickness)), #000 calc(100% - (var(--ring-thickness) - 1px)));
   box-shadow:
-    inset 0 0 20px rgba(52, 211, 153, 0.14),
-    0 0 18px rgba(52, 211, 153, 0.08);
+    inset 0 0 20px rgba(56, 189, 248, 0.14),
+    0 0 18px rgba(56, 189, 248, 0.08);
 }
 
 .segment-ring::before {
@@ -136,8 +97,8 @@
   border-radius: inherit;
   background: repeating-conic-gradient(
     from 36deg,
-    rgba(52, 211, 153, 0.3) 0deg 8deg,
-    rgba(52, 211, 153, 0) 8deg 18deg
+    rgba(56, 189, 248, 0.3) 0deg 8deg,
+    rgba(56, 189, 248, 0) 8deg 18deg
   );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
@@ -150,7 +111,7 @@
   position: absolute;
   inset: -18%;
   border-radius: inherit;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, rgba(52, 211, 153, 0) 68%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0) 68%);
   filter: blur(12px);
   z-index: -1;
 }
@@ -178,8 +139,8 @@
   width: 14px;
   height: 14px;
   border-radius: 4px;
-  background: #6ee7b7;
-  box-shadow: 0 0 8px rgba(52, 211, 153, 0.24);
+  background: #22d3ee;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.24);
   transform-origin: center;
 }
 
@@ -219,48 +180,10 @@
   font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', sans-serif;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: #14532d;
-  text-shadow: 0 4px 12px rgba(20, 83, 45, 0.16);
+  color: #e2e8ff;
+  text-shadow: 0 4px 12px rgba(56, 189, 248, 0.22);
   transform: translateZ(0);
   animation: fade-up 0.86s ease-out 0.2s both;
-}
-
-.feature-card {
-  position: relative;
-  overflow: hidden;
-  animation: fade-up 0.8s ease-out both;
-}
-
-.feature-card::after {
-  content: '';
-  position: absolute;
-  inset: auto -30% -50% auto;
-  width: 160px;
-  height: 160px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0) 72%);
-  transition: transform 0.35s ease;
-  pointer-events: none;
-}
-
-.feature-card:hover::after {
-  transform: translate(-10px, -14px) scale(1.04);
-}
-
-.feature-card:nth-child(1) {
-  animation-delay: 0.38s;
-}
-
-.feature-card:nth-child(2) {
-  animation-delay: 0.46s;
-}
-
-.feature-card:nth-child(3) {
-  animation-delay: 0.54s;
-}
-
-.feature-card:nth-child(4) {
-  animation-delay: 0.62s;
 }
 
 @keyframes fade-up {

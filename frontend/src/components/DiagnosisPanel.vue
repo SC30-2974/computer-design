@@ -1,10 +1,10 @@
 ﻿<template>
-  <div class="rounded-3xl border border-slate-800 bg-slate-950/80 p-6">
+  <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6">
     <div class="mb-4 flex items-center justify-between">
-      <h3 class="text-xl font-semibold text-white">财务诊断</h3>
+      <h3 class="text-xl font-semibold text-cyan-50">财务诊断</h3>
       <select
         v-model="selected"
-        class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200"
+        class="rounded-xl border border-slate-700 bg-cyan-950/70 px-3 py-2 text-sm text-cyan-200"
         @change="loadDiagnosis"
       >
         <option v-for="item in companies" :key="item.company_name" :value="item.company_name">
@@ -19,30 +19,30 @@
 
     <div v-if="diagnosis" class="space-y-4 text-sm text-slate-300">
       <div class="grid grid-cols-2 gap-4">
-        <div class="rounded-2xl bg-slate-900 p-4">
-          <div class="text-slate-400">毛利率 / 评价</div>
-          <div class="mt-2 text-xl font-semibold text-white">{{ diagnosis.gross_margin }}% · {{ diagnosis.gross_margin_level }}</div>
+        <div class="rounded-2xl bg-cyan-950/70 p-4">
+          <div class="text-cyan-300">毛利率 / 评价</div>
+          <div class="mt-2 text-xl font-semibold text-cyan-50">{{ diagnosis.gross_margin }}% · {{ diagnosis.gross_margin_level }}</div>
         </div>
-        <div class="rounded-2xl bg-slate-900 p-4">
-          <div class="text-slate-400">净利率 / 评价</div>
-          <div class="mt-2 text-xl font-semibold text-white">{{ diagnosis.net_margin }}% · {{ diagnosis.net_margin_level }}</div>
+        <div class="rounded-2xl bg-cyan-950/70 p-4">
+          <div class="text-cyan-300">净利率 / 评价</div>
+          <div class="mt-2 text-xl font-semibold text-cyan-50">{{ diagnosis.net_margin }}% · {{ diagnosis.net_margin_level }}</div>
         </div>
       </div>
 
-      <div class="rounded-2xl bg-slate-900 p-4">
-        <div class="text-slate-400">综合判断</div>
-        <div class="mt-2 text-base text-white">{{ diagnosis.overall_assessment }}</div>
+      <div class="rounded-2xl bg-cyan-950/70 p-4">
+        <div class="text-cyan-300">综合判断</div>
+        <div class="mt-2 text-base text-cyan-50">{{ diagnosis.overall_assessment }}</div>
       </div>
 
-      <div class="rounded-2xl bg-slate-900 p-4">
-        <div class="text-slate-400">建议</div>
+      <div class="rounded-2xl bg-cyan-950/70 p-4">
+        <div class="text-cyan-300">建议</div>
         <ul class="mt-2 list-disc space-y-1 pl-5">
           <li v-for="item in diagnosis.suggestions" :key="item">{{ item }}</li>
         </ul>
       </div>
     </div>
 
-    <div v-else class="rounded-2xl bg-slate-900 p-4 text-sm text-slate-300">暂无诊断数据。</div>
+    <div v-else class="rounded-2xl bg-cyan-950/70 p-4 text-sm text-slate-300">暂无诊断数据。</div>
   </div>
 </template>
 
@@ -77,3 +77,6 @@ onMounted(async () => {
   }
 })
 </script>
+
+
+

@@ -3,14 +3,14 @@
     <header class="panel p-4 sm:p-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 class="text-xl font-semibold text-emerald-950">企业详情</h1>
-          <p class="mt-1 text-sm text-emerald-700">聚焦单企业核心财务表现、诊断结论与样本对比。</p>
+          <h1 class="text-xl font-semibold text-cyan-50">企业详情</h1>
+          <p class="mt-1 text-sm text-cyan-300">聚焦单企业核心财务表现、诊断结论与样本对比。</p>
         </div>
-        <div class="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2">
-          <span class="text-sm text-emerald-700">企业</span>
+        <div class="flex items-center gap-2 rounded-xl border border-cyan-500/35 bg-slate-950/78 px-3 py-2">
+          <span class="text-sm text-cyan-300">企业</span>
           <select
             v-model="selectedCompany"
-            class="min-w-[120px] bg-transparent text-sm font-medium text-emerald-900 outline-none"
+            class="enterprise-select min-w-[120px] bg-transparent text-sm font-medium text-cyan-100 outline-none"
             @change="loadEnterpriseDetail"
           >
             <option v-for="item in companyOptions" :key="item" :value="item">{{ shortLabel(item) }}</option>
@@ -41,7 +41,7 @@
     <section class="grid gap-4 xl:grid-cols-2">
       <article class="panel p-5">
         <h3 class="panel-title">企业评分卡</h3>
-        <p class="mt-1 text-xs text-emerald-700">成长性、盈利质量、风险暴露三维评分（0-100）。</p>
+        <p class="mt-1 text-xs text-cyan-300">成长性、盈利质量、风险暴露三维评分（0-100）。</p>
 
         <div class="mt-4 space-y-3">
           <div class="score-row">
@@ -69,12 +69,12 @@
           </div>
         </div>
 
-        <p class="mt-3 text-xs text-emerald-700">说明：风险暴露分值越高，需关注的不确定性越大。</p>
+        <p class="mt-3 text-xs text-cyan-300">说明：风险暴露分值越高，需关注的不确定性越大。</p>
       </article>
 
       <article class="panel p-5">
         <h3 class="panel-title">季度趋势线（Q1-Q3）</h3>
-        <p class="mt-1 text-xs text-emerald-700">基于当前样本前三季度汇总值拆分形成趋势视图，用于展示节奏变化。</p>
+        <p class="mt-1 text-xs text-cyan-300">基于当前样本前三季度汇总值拆分形成趋势视图，用于展示节奏变化。</p>
         <div ref="trendRef" class="mt-3 h-[320px] w-full"></div>
       </article>
     </section>
@@ -82,7 +82,7 @@
     <section class="grid gap-4 xl:grid-cols-2">
       <article class="panel p-5">
         <h3 class="panel-title">财务诊断</h3>
-        <div v-if="diagnosis" class="mt-4 space-y-3 text-sm text-emerald-800">
+        <div v-if="diagnosis" class="mt-4 space-y-3 text-sm text-cyan-200">
           <p>毛利率评价：<strong>{{ diagnosis.gross_margin_level }}</strong></p>
           <p>净利率评价：<strong>{{ diagnosis.net_margin_level }}</strong></p>
           <p>综合结论：{{ diagnosis.overall_assessment }}</p>
@@ -94,17 +94,17 @@
 
       <article class="panel p-5">
         <h3 class="panel-title">经营摘要</h3>
-        <div v-if="companyProfile" class="mt-4 space-y-3 text-sm text-emerald-800">
+        <div v-if="companyProfile" class="mt-4 space-y-3 text-sm text-cyan-200">
           <p>{{ companyProfile.business_summary }}</p>
-          <p><span class="font-semibold text-emerald-900">风险与机会：</span>{{ companyProfile.risk_opportunity }}</p>
-          <p><span class="font-semibold text-emerald-900">所属赛道：</span>{{ companyProfile.sector }}</p>
+          <p><span class="font-semibold text-cyan-100">风险与机会：</span>{{ companyProfile.risk_opportunity }}</p>
+          <p><span class="font-semibold text-cyan-100">所属赛道：</span>{{ companyProfile.sector }}</p>
         </div>
       </article>
     </section>
 
     <article class="panel p-5">
       <h3 class="panel-title">样本对比（企业值 vs 全样本均值）</h3>
-      <p class="mt-1 text-xs text-emerald-700">对比维度为营收、净利润、毛利率，用于快速判断企业相对位置。</p>
+      <p class="mt-1 text-xs text-cyan-300">对比维度为营收、净利润、毛利率，用于快速判断企业相对位置。</p>
       <div ref="compareRef" class="mt-3 h-[320px] w-full sm:h-[360px]"></div>
     </article>
   </section>
@@ -233,20 +233,20 @@ const renderTrendChart = () => {
     tooltip: { trigger: 'axis' },
     legend: {
       top: 0,
-      textStyle: { color: '#064e3b' },
+      textStyle: { color: '#dbeafe' },
       data: ['营收', '净利润', '毛利率'],
     },
     grid: { left: 50, right: 20, top: 48, bottom: 28 },
     xAxis: {
       type: 'category',
       data: ['Q1', 'Q2', 'Q3'],
-      axisLabel: { color: '#065f46' },
-      axisLine: { lineStyle: { color: 'rgba(16,185,129,0.24)' } },
+      axisLabel: { color: '#dbeafe' },
+      axisLine: { lineStyle: { color: 'rgba(56,189,248,0.24)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#065f46' },
-      splitLine: { lineStyle: { color: 'rgba(16,185,129,0.12)' } },
+      axisLabel: { color: '#dbeafe' },
+      splitLine: { lineStyle: { color: 'rgba(56,189,248,0.12)' } },
     },
     series: [
       {
@@ -255,8 +255,8 @@ const renderTrendChart = () => {
         smooth: true,
         data: trend.revenue,
         symbolSize: 7,
-        lineStyle: { width: 2, color: '#0f766e' },
-        itemStyle: { color: '#0f766e' },
+        lineStyle: { width: 2, color: '#0ea5e9' },
+        itemStyle: { color: '#0ea5e9' },
       },
       {
         name: '净利润',
@@ -264,8 +264,8 @@ const renderTrendChart = () => {
         smooth: true,
         data: trend.profit,
         symbolSize: 7,
-        lineStyle: { width: 2, color: '#10b981' },
-        itemStyle: { color: '#10b981' },
+        lineStyle: { width: 2, color: '#38bdf8' },
+        itemStyle: { color: '#38bdf8' },
       },
       {
         name: '毛利率',
@@ -273,8 +273,8 @@ const renderTrendChart = () => {
         smooth: true,
         data: trend.margin,
         symbolSize: 7,
-        lineStyle: { width: 2, color: '#34d399' },
-        itemStyle: { color: '#34d399' },
+        lineStyle: { width: 2, color: '#7dd3fc' },
+        itemStyle: { color: '#7dd3fc' },
       },
     ],
     animationDuration: 700,
@@ -290,20 +290,20 @@ const renderCompareChart = () => {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: {
       top: 0,
-      textStyle: { color: '#064e3b' },
+      textStyle: { color: '#dbeafe' },
       data: ['企业值', '全样本均值'],
     },
     grid: { left: 50, right: 24, top: 48, bottom: 30 },
     xAxis: {
       type: 'category',
       data: ['营收', '净利润', '毛利率'],
-      axisLabel: { color: '#065f46' },
-      axisLine: { lineStyle: { color: 'rgba(16,185,129,0.24)' } },
+      axisLabel: { color: '#dbeafe' },
+      axisLine: { lineStyle: { color: 'rgba(56,189,248,0.24)' } },
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#065f46' },
-      splitLine: { lineStyle: { color: 'rgba(16,185,129,0.12)' } },
+      axisLabel: { color: '#dbeafe' },
+      splitLine: { lineStyle: { color: 'rgba(56,189,248,0.12)' } },
     },
     series: [
       {
@@ -313,7 +313,7 @@ const renderCompareChart = () => {
         data: [companyProfile.value.revenue, companyProfile.value.profit, companyProfile.value.margin],
         itemStyle: {
           borderRadius: 8,
-          color: '#0f766e',
+          color: '#0ea5e9',
         },
       },
       {
@@ -323,7 +323,7 @@ const renderCompareChart = () => {
         data: [overallAvg.revenue, overallAvg.profit, overallAvg.margin],
         itemStyle: {
           borderRadius: 8,
-          color: '#6ee7b7',
+          color: '#22d3ee',
         },
       },
     ],
@@ -376,51 +376,52 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .detail-page {
-  color: #065f46;
+  color: #e2e8f0;
 }
 
 .panel {
   border-radius: 1rem;
-  border: 1px solid rgba(16, 185, 129, 0.22);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 8px 20px rgba(6, 95, 70, 0.04);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  background: linear-gradient(160deg, rgba(8, 17, 40, 0.92), rgba(2, 8, 23, 0.88));
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.22);
 }
 
 .panel-title {
   font-size: 1.05rem;
   font-weight: 600;
-  color: #064e3b;
+  color: #f0f9ff;
 }
 
 .metric-card {
   border-radius: 1rem;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  background: linear-gradient(180deg, #ffffff 0%, #f4fff9 100%);
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  background: linear-gradient(165deg, rgba(12, 24, 52, 0.95) 0%, rgba(2, 8, 23, 0.94) 100%);
+  box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.08);
   padding: 1rem;
 }
 
 .metric-label {
   font-size: 0.78rem;
-  color: #0f766e;
+  color: #7dd3fc;
 }
 
 .metric-value {
   margin-top: 0.4rem;
   font-size: 1.55rem;
   font-weight: 700;
-  color: #064e3b;
+  color: #f8fafc;
 }
 
 .score-row {
   font-size: 0.9rem;
-  color: #065f46;
+  color: #e2e8f0;
 }
 
 .score-track {
   margin-top: 0.4rem;
   height: 8px;
   border-radius: 999px;
-  background: #ecfdf5;
+  background: #0b1a33;
   overflow: hidden;
 }
 
@@ -428,10 +429,28 @@ onBeforeUnmount(() => {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #10b981, #34d399);
+  background: linear-gradient(90deg, #38bdf8, #7dd3fc);
 }
 
 .score-fill.risk {
   background: linear-gradient(90deg, #f59e0b, #ef4444);
 }
+
+.enterprise-select {
+  background-color: rgba(2, 8, 23, 0.96) !important;
+  color: #e2e8f0 !important;
+}
+
+.enterprise-select option {
+  background-color: #020817;
+  color: #e2e8f0;
+}
 </style>
+
+
+
+
+
+
+
+
