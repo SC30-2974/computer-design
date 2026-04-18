@@ -112,10 +112,18 @@
         <div ref="energyBurstRef" class="energy-burst"></div>
 
         <main ref="contentFrameRef" class="content-frame rounded-[28px] border border-cyan-500/30 bg-slate-950/52 p-3 shadow-[0_30px_56px_rgba(56,189,248,0.16)] backdrop-blur-2xl" :class="mainContentClass">
-          <div v-if="showPageTitle" class="mb-4 pl-14">
+          <div v-if="showPageTitle" class="mb-4 flex items-center justify-between gap-3 pl-14 pr-2">
             <h1 class="text-2xl font-black tracking-tight text-cyan-100 sm:text-[2rem]">{{ currentPageTitle }}</h1>
+            <button
+              type="button"
+              class="inline-flex items-center rounded-xl border border-cyan-500/45 bg-slate-950/80 px-3 py-1.5 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-950/70"
+              :disabled="isTransitioning"
+              @click="handlePageRefresh"
+            >
+              刷新
+            </button>
           </div>
-          <router-view />
+          <router-view :key="`${route.fullPath}|${refreshTick}`" />
         </main>
       </div>
     </div>
@@ -157,6 +165,7 @@ const isTransitioning = ref(false)
 const stageRef = ref<HTMLElement | null>(null)
 const contentFrameRef = ref<HTMLElement | null>(null)
 const energyBurstRef = ref<HTMLElement | null>(null)
+const refreshTick = ref(0)
 const SIDEBAR_STORAGE_KEY = 'desktop-menu-open'
 
 const isActive = (path: string) => route.path === path
@@ -262,6 +271,10 @@ const toggleGlobalMenu = () => {
     return
   }
   desktopMenuOpen.value = !desktopMenuOpen.value
+}
+
+const handlePageRefresh = () => {
+  refreshTick.value += 1
 }
 
 const handleHomeNavigate = (event: Event) => {

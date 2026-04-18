@@ -219,12 +219,13 @@ const handleFileChange = async (event: Event) => {
       statusText.value = refreshed
         ? '上传完成，其他页面数据已同步刷新。'
         : '上传完成，后台仍在解析中，请稍后查看其他页面数据。'
-      if (refreshed) {
-        emitDataRefreshed()
-      }
+      // 无论当前轮询是否捕获到新数据，都触发一次全局刷新事件，
+      // 让大屏（含营收/净利润饼图）立即重拉一次数据。
+      emitDataRefreshed()
     } catch (refreshError: any) {
       const detail = refreshError?.response?.data?.detail || refreshError?.message || '未知错误'
       statusText.value = `上传成功，但刷新失败：${detail}`
+      emitDataRefreshed()
     }
   } catch (error: any) {
     const detail = error?.response?.data?.detail || error?.message || '未知错误'
