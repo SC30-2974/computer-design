@@ -241,12 +241,12 @@ const renderTrendChart = () => {
       type: 'category',
       data: ['Q1', 'Q2', 'Q3'],
       axisLabel: { color: '#dbeafe' },
-      axisLine: { lineStyle: { color: 'rgba(56,189,248,0.24)' } },
+      axisLine: { lineStyle: { color: 'rgba(59,130,246,0.3)' } },
     },
     yAxis: {
       type: 'value',
       axisLabel: { color: '#dbeafe' },
-      splitLine: { lineStyle: { color: 'rgba(56,189,248,0.12)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.15)' } },
     },
     series: [
       {
@@ -298,12 +298,12 @@ const renderCompareChart = () => {
       type: 'category',
       data: ['营收', '净利润', '毛利率'],
       axisLabel: { color: '#dbeafe' },
-      axisLine: { lineStyle: { color: 'rgba(56,189,248,0.24)' } },
+      axisLine: { lineStyle: { color: 'rgba(59,130,246,0.3)' } },
     },
     yAxis: {
       type: 'value',
       axisLabel: { color: '#dbeafe' },
-      splitLine: { lineStyle: { color: 'rgba(56,189,248,0.12)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.15)' } },
     },
     series: [
       {
@@ -376,14 +376,14 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .detail-page {
-  color: #e2e8f0;
+  color: #dbeafe;
 }
 
 .panel {
   border-radius: 1rem;
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  background: linear-gradient(160deg, rgba(8, 17, 40, 0.92), rgba(2, 8, 23, 0.88));
-  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.22);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: linear-gradient(160deg, rgba(2, 8, 23, 0.8), rgba(18, 70, 146, 0.68));
+  box-shadow: 0 9px 22px rgba(2, 132, 199, 0.2);
 }
 
 .panel-title {
@@ -395,7 +395,7 @@ onBeforeUnmount(() => {
 .metric-card {
   border-radius: 1rem;
   border: 1px solid rgba(56, 189, 248, 0.34);
-  background: linear-gradient(165deg, rgba(12, 24, 52, 0.95) 0%, rgba(2, 8, 23, 0.94) 100%);
+  background: linear-gradient(165deg, rgba(18, 70, 146, 0.74) 0%, rgba(2, 8, 23, 0.76) 100%);
   box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.08);
   padding: 1rem;
 }
@@ -421,7 +421,7 @@ onBeforeUnmount(() => {
   margin-top: 0.4rem;
   height: 8px;
   border-radius: 999px;
-  background: #0b1a33;
+  background: #0a1732;
   overflow: hidden;
 }
 
@@ -433,11 +433,11 @@ onBeforeUnmount(() => {
 }
 
 .score-fill.risk {
-  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
 }
 
 .enterprise-select {
-  background-color: rgba(2, 8, 23, 0.96) !important;
+  background-color: rgba(2, 8, 23, 0.95) !important;
   color: #e2e8f0 !important;
 }
 

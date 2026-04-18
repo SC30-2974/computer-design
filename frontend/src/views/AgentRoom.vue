@@ -1,10 +1,10 @@
 ﻿<template>
-  <section class="agent-room min-h-[calc(100vh-4rem)] p-0 -mx-2 sm:-mx-4 lg:-mx-6 flex">
+  <section class="agent-room flex h-screen min-h-screen p-0">
     <div class="flex flex-1 flex-col overflow-hidden rounded-none bg-transparent">
-      <div class="flex-1 overflow-visible p-0">
+      <div class="flex-1 overflow-hidden p-0">
         <iframe
           src="https://udify.app/chatbot/v2rkJLTx9Z9hWdS3"
-          class="agent-room-frame h-[calc(100vh-4rem)] w-full rounded-none"
+          class="agent-room-frame h-full w-full rounded-none"
           frameborder="0"
           allow="microphone"
         ></iframe>
@@ -15,19 +15,19 @@
 
 <script setup lang="ts">
 // 智能研判室页面采用嵌入 Dify 聊天能力。
-// 容器通过固定可用高度 + overflow 控制，避免出现双滚动条。
+// 容器改为沉浸式全屏，直接让智能体页面占满可视区。
 </script>
 
 <style scoped>
 .agent-room {
   background:
-    radial-gradient(900px 520px at 14% 8%, rgba(56, 189, 248, 0.08), transparent 60%),
-    radial-gradient(740px 460px at 88% 85%, rgba(14, 165, 233, 0.05), transparent 66%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 252, 255, 0.94));
+    radial-gradient(840px 500px at 16% 12%, rgba(37, 99, 235, 0.4), transparent 60%),
+    radial-gradient(740px 460px at 86% 78%, rgba(14, 165, 233, 0.32), transparent 66%),
+    linear-gradient(158deg, rgba(2, 8, 23, 0.86), rgba(18, 70, 146, 0.76));
 }
 
 .agent-room-frame {
-  background: #ffffff;
+  background: linear-gradient(158deg, rgba(2, 8, 23, 0.78), rgba(18, 70, 146, 0.66));
   filter: none;
 }
 </style>

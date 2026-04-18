@@ -17,11 +17,26 @@
 
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/58 p-6 lg:col-span-3">
-        <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-xl font-semibold text-cyan-100">新能源各赛道营收占比</h3>
-          <p class="text-sm text-cyan-300">按赛道聚合企业营收（亿元）</p>
+        <div class="mb-4 flex items-center justify-between gap-4">
+          <h3 class="text-xl font-semibold text-cyan-100">新能源各赛道占比</h3>
+          <p class="text-sm text-cyan-300">按赛道聚合企业营收 / 净利润（亿元）</p>
         </div>
-        <div ref="pieRef" class="h-[340px] w-full lg:h-[410px]"></div>
+        <div class="grid gap-5 xl:grid-cols-2">
+          <div class="rounded-2xl border border-cyan-500/25 bg-slate-950/58 p-4">
+            <div class="mb-2 flex items-center justify-between">
+              <p class="text-sm font-semibold text-cyan-100">营收占比</p>
+              <p class="text-xs text-cyan-300">按赛道聚合企业营收（亿元）</p>
+            </div>
+            <div ref="pieRef" class="h-[320px] w-full lg:h-[380px]"></div>
+          </div>
+          <div class="rounded-2xl border border-cyan-500/25 bg-slate-950/58 p-4">
+            <div class="mb-2 flex items-center justify-between">
+              <p class="text-sm font-semibold text-cyan-100">净利润占比</p>
+              <p class="text-xs text-cyan-300">按赛道聚合净利润（亿元）</p>
+            </div>
+            <div ref="profitPieRef" class="h-[320px] w-full lg:h-[380px]"></div>
+          </div>
+        </div>
       </div>
 
       <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/58 p-6 lg:col-span-3">
@@ -48,8 +63,10 @@ import { getCompanies } from '../api/finance'
 import FinancialAnalysisView from './FinancialAnalysis.vue'
 
 const pieRef = ref<HTMLDivElement | null>(null)
+const profitPieRef = ref<HTMLDivElement | null>(null)
 const scatterRef = ref<HTMLDivElement | null>(null)
 let pieChart: echarts.ECharts | null = null
+let profitPieChart: echarts.ECharts | null = null
 let scatterChart: echarts.ECharts | null = null
 
 const companies = ref<any[]>([])
@@ -97,6 +114,20 @@ const buildSectorSeries = () => {
   return Array.from(map.entries()).map(([name, value]) => ({ name, value: Number(value.toFixed(2)) }))
 }
 
+const buildProfitSectorSeries = () => {
+  const map = new Map<string, number>()
+  companies.value.forEach((item) => {
+    const sector = String(item.sector || '未分类')
+    const key = sector === '新上传' ? shortLabel(String(item.company_name || '新上传')) : sector
+    const profit = Number(item.profit || 0)
+    // 饼图不支持负值；占比场景仅统计正向净利润。
+    if (profit > 0) {
+      map.set(key, (map.get(key) || 0) + profit)
+    }
+  })
+  return Array.from(map.entries()).map(([name, value]) => ({ name, value: Number(value.toFixed(2)) }))
+}
+
 const buildScatterData = () =>
   companies.value.map((item) => {
     const revenue = Number(item.revenue || 0)
@@ -108,26 +139,39 @@ const buildScatterData = () =>
     }
   })
 
-const renderPie = () => {
-  if (!pieRef.value) return
-  if (!pieChart) {
-    pieChart = echarts.init(pieRef.value)
-  }
-
-  const pieData = buildSectorSeries()
-
-  pieChart.setOption({
+const renderSectorPie = (
+  chart: echarts.ECharts,
+  pieData: Array<{ name: string; value: number }>,
+  labelPrefix: string,
+  emptyLabel: string,
+) => {
+  const hasData = pieData.length > 0
+  chart.setOption({
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      formatter: '{b}<br/>营收：{c} 亿元 ({d}%)',
+      formatter: `{b}<br/>${labelPrefix}：{c} 亿元 ({d}%)`,
     },
     legend: {
       show: false,
     },
+    graphic: hasData
+      ? []
+      : [
+          {
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            style: {
+              text: emptyLabel,
+              fill: '#9bdcff',
+              font: '600 14px sans-serif',
+            },
+          },
+        ],
     series: [
       {
-        name: '赛道营收占比',
+        name: `${labelPrefix}占比`,
         type: 'pie',
         radius: ['60%', '90%'],
         center: ['50%', '53%'],
@@ -148,13 +192,29 @@ const renderPie = () => {
           length: 18,
           length2: 14,
         },
-        data: pieData,
+        data: hasData ? pieData : [],
         color: ['#38bdf8', '#7dd3fc', '#22d3ee', '#0ea5e9', '#60a5fa', '#0284c7'],
         animationDuration: 1000,
         animationEasing: 'cubicOut',
       },
     ],
   })
+}
+
+const renderPie = () => {
+  if (!pieRef.value) return
+  if (!pieChart) {
+    pieChart = echarts.init(pieRef.value)
+  }
+  renderSectorPie(pieChart, buildSectorSeries(), '营收', '暂无营收占比数据')
+}
+
+const renderProfitPie = () => {
+  if (!profitPieRef.value) return
+  if (!profitPieChart) {
+    profitPieChart = echarts.init(profitPieRef.value)
+  }
+  renderSectorPie(profitPieChart, buildProfitSectorSeries(), '净利润', '暂无正向净利润占比数据')
 }
 
 const renderScatter = () => {
@@ -186,8 +246,8 @@ const renderScatter = () => {
       nameGap: 52,
       nameTextStyle: { color: '#a5f3fc', fontSize: 18, fontWeight: 700 },
       axisLabel: { color: '#a5f3fc', fontSize: 15, fontWeight: 600 },
-      axisLine: { lineStyle: { color: 'rgba(34,211,238,0.4)' } },
-      splitLine: { lineStyle: { color: 'rgba(34,211,238,0.18)' } },
+      axisLine: { lineStyle: { color: 'rgba(59,130,246,0.36)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.16)' } },
     },
     yAxis: {
       name: '净利润（亿元）',
@@ -196,8 +256,8 @@ const renderScatter = () => {
       nameRotate: 90,
       nameTextStyle: { color: '#a5f3fc', fontSize: 18, fontWeight: 700 },
       axisLabel: { color: '#a5f3fc', fontSize: 15, fontWeight: 600 },
-      axisLine: { lineStyle: { color: 'rgba(34,211,238,0.4)' } },
-      splitLine: { lineStyle: { color: 'rgba(34,211,238,0.18)' } },
+      axisLine: { lineStyle: { color: 'rgba(59,130,246,0.36)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.16)' } },
     },
     series: [
       {
@@ -210,7 +270,7 @@ const renderScatter = () => {
             { offset: 1, color: '#0284c7' },
           ]),
           shadowBlur: 20,
-          shadowColor: 'rgba(34,211,238,0.45)',
+          shadowColor: 'rgba(59,130,246,0.35)',
         },
       },
     ],
@@ -224,11 +284,13 @@ const renderScatter = () => {
 
 const renderAllCharts = () => {
   renderPie()
+  renderProfitPie()
   renderScatter()
 }
 
 const handleResize = () => {
   pieChart?.resize()
+  profitPieChart?.resize()
   scatterChart?.resize()
 }
 
@@ -261,8 +323,10 @@ onBeforeUnmount(() => {
   window.removeEventListener('data-refreshed', handleDataRefresh)
   window.removeEventListener('storage', handleStorageRefresh)
   pieChart?.dispose()
+  profitPieChart?.dispose()
   scatterChart?.dispose()
   pieChart = null
+  profitPieChart = null
   scatterChart = null
 })
 </script>

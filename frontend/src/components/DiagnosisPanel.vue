@@ -17,7 +17,7 @@
       {{ errorMessage }}
     </div>
 
-    <div v-if="diagnosis" class="space-y-4 text-sm text-slate-300">
+    <div v-if="diagnosis" class="space-y-4 text-sm text-cyan-200">
       <div class="grid grid-cols-2 gap-4">
         <div class="rounded-2xl bg-cyan-950/70 p-4">
           <div class="text-cyan-300">毛利率 / 评价</div>
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div v-else class="rounded-2xl bg-cyan-950/70 p-4 text-sm text-slate-300">暂无诊断数据。</div>
+    <div v-else class="rounded-2xl bg-cyan-950/70 p-4 text-sm text-cyan-200">暂无诊断数据。</div>
   </div>
 </template>
 

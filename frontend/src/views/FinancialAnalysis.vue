@@ -18,7 +18,7 @@
     <div class="border-t border-cyan-500/20 pt-5">
       <div class="mb-3 flex items-center justify-between gap-3">
         <h3 class="text-xl font-semibold text-cyan-100">多企业对战模式</h3>
-        <button class="rounded-xl bg-cyan-600 px-5 py-2.5 text-base font-semibold text-cyan-50 hover:bg-cyan-500" @click="runBattle">
+        <button class="rounded-xl bg-blue-600 px-5 py-2.5 text-base font-semibold text-cyan-50 hover:bg-blue-500" @click="runBattle">
           生成对战结论
         </button>
       </div>
@@ -206,13 +206,13 @@ const loadData = async () => {
       name: metricNameMap[metric.value],
       nameTextStyle: { color: '#dbeafe', fontSize: 16, fontWeight: 700 },
       axisLabel: { color: '#dbeafe', fontSize: 15, fontWeight: 600 },
-      splitLine: { lineStyle: { color: 'rgba(34,211,238,0.2)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.16)' } },
     },
     yAxis: {
       type: 'category',
       data: names,
       axisLabel: {
-        color: '#dbeafe',
+          color: '#dbeafe',
         fontSize: 15,
         fontWeight: 600,
         formatter: (value: string) => shortLabel(value),
@@ -226,7 +226,7 @@ const loadData = async () => {
         barWidth: 18,
         showBackground: true,
         backgroundStyle: {
-          color: 'rgba(56,189,248,0.12)',
+          color: 'rgba(59,130,246,0.12)',
           borderRadius: 10,
         },
         itemStyle: {
@@ -326,9 +326,9 @@ const renderRadarChart = () => {
         { name: '净利润', max: 100 },
         { name: '毛利率', max: 100 },
       ],
-      splitLine: { lineStyle: { color: 'rgba(56,189,248,0.22)' } },
-      splitArea: { areaStyle: { color: ['rgba(56,189,248,0.02)', 'rgba(56,189,248,0.05)'] } },
-      axisLine: { lineStyle: { color: 'rgba(56,189,248,0.3)' } },
+      splitLine: { lineStyle: { color: 'rgba(59,130,246,0.2)' } },
+      splitArea: { areaStyle: { color: ['rgba(59,130,246,0.02)', 'rgba(59,130,246,0.05)'] } },
+      axisLine: { lineStyle: { color: 'rgba(59,130,246,0.26)' } },
       name: { color: '#dbeafe', fontSize: 15, fontWeight: 700 },
     },
     series: [

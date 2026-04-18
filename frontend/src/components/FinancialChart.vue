@@ -59,7 +59,7 @@ const loadChart = async () => {
         axisPointer: { type: 'shadow' },
         backgroundColor: 'rgba(15, 23, 42, 0.95)',
         borderColor: '#22d3ee',
-        textStyle: { color: '#e2e8f0' },
+      textStyle: { color: '#dbeafe' },
         formatter: (params: any) => {
           const item = params[0]
           if (!item) return ''

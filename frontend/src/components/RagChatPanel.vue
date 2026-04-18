@@ -12,7 +12,7 @@
       ></iframe>
     </div>
 
-    <p class="mt-3 text-xs text-slate-500">如果某些浏览器策略限制内嵌，可能出现空白。</p>
+    <p class="mt-3 text-xs text-cyan-300/80">如果某些浏览器策略限制内嵌，可能出现空白。</p>
   </div>
 </template>
 

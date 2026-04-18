@@ -40,7 +40,7 @@
   width: min(96vw, 1180px);
   height: min(96vw, 1180px);
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0.05) 45%, rgba(56, 189, 248, 0) 72%);
+  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.08) 45%, rgba(56, 189, 248, 0) 72%);
   filter: blur(12px);
   pointer-events: none;
   z-index: 0;
@@ -180,8 +180,13 @@
   font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', sans-serif;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: #e2e8ff;
-  text-shadow: 0 4px 12px rgba(56, 189, 248, 0.22);
+  color: transparent;
+  background: linear-gradient(96deg, #f8fdff 10%, #d9f6ff 40%, #7dd3fc 76%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    0 3px 14px rgba(56, 189, 248, 0.28),
+    0 0 28px rgba(14, 165, 233, 0.2);
   transform: translateZ(0);
   animation: fade-up 0.86s ease-out 0.2s both;
 }

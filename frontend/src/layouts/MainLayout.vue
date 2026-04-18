@@ -145,7 +145,7 @@ const menus: MenuItem[] = [
   { path: '/home', label: '主界面', icon: 'home' },
   { path: '/dashboard', label: '行业对比大屏', icon: 'dashboard' },
   { path: '/enterprise-detail', label: '企业详情', icon: 'enterprise' },
-  { path: '/agent-room', label: '智能研判室', icon: 'agent' },
+  { path: '/agent-room', label: '智能体', icon: 'agent' },
   { path: '/data-upload', label: '财报上传', icon: 'upload' },
 ]
 
@@ -161,11 +161,12 @@ const SIDEBAR_STORAGE_KEY = 'desktop-menu-open'
 
 const isActive = (path: string) => route.path === path
 const isHomePage = computed(() => route.path === '/home')
+const isAgentRoomPage = computed(() => route.path === '/agent-room')
 const currentPageTitle = computed(() => menus.find((item) => item.path === route.path)?.label || '')
-const showPageTitle = computed(() => !isHomePage.value && currentPageTitle.value !== '')
+const showPageTitle = computed(() => !isHomePage.value && !isAgentRoomPage.value && currentPageTitle.value !== '')
 const mainContentClass = computed(() => {
-  if (isHomePage.value) {
-    return 'content-frame--home border-0 bg-transparent p-0 shadow-none backdrop-blur-0 rounded-none'
+  if (isHomePage.value || isAgentRoomPage.value) {
+    return 'content-frame--immersive border-0 bg-transparent p-0 shadow-none backdrop-blur-0 rounded-none'
   }
   return 'p-4 sm:p-5 lg:p-6'
 })
@@ -312,7 +313,7 @@ watch(desktopMenuOpen, (value) => {
   height: 36vw;
   min-width: 280px;
   min-height: 280px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.24), rgba(56, 189, 248, 0));
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.34), rgba(37, 99, 235, 0));
 }
 
 .app-glow-right {
@@ -322,7 +323,7 @@ watch(desktopMenuOpen, (value) => {
   height: 30vw;
   min-width: 240px;
   min-height: 240px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.24), rgba(34, 211, 238, 0));
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.32), rgba(56, 189, 248, 0));
 }
 
 .stage-shell {
@@ -334,9 +335,15 @@ watch(desktopMenuOpen, (value) => {
 .content-frame {
   transform-style: preserve-3d;
   min-height: calc(100vh - 6.5rem);
+  background:
+    radial-gradient(680px 340px at 86% 16%, rgba(56, 189, 248, 0.28) 0%, rgba(56, 189, 248, 0) 72%),
+    linear-gradient(162deg, rgba(2, 8, 23, 0.76), rgba(18, 70, 146, 0.62));
+  box-shadow:
+    0 22px 40px rgba(2, 132, 199, 0.2),
+    inset 0 0 0 1px rgba(56, 189, 248, 0.22);
 }
 
-.content-frame--home {
+.content-frame--immersive {
   min-height: 100vh;
 }
 
@@ -348,11 +355,11 @@ watch(desktopMenuOpen, (value) => {
   height: 18px;
   pointer-events: none;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(56, 189, 248, 0.9));
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(14, 165, 233, 0.92));
   box-shadow:
-    0 0 16px rgba(56, 189, 248, 0.5),
-    0 0 36px rgba(56, 189, 248, 0.28),
-    0 0 70px rgba(34, 211, 238, 0.22);
+    0 0 16px rgba(56, 189, 248, 0.52),
+    0 0 36px rgba(14, 165, 233, 0.3),
+    0 0 70px rgba(29, 78, 216, 0.24);
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.3);
   z-index: 70;
