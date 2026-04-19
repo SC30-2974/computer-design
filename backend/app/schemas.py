@@ -1,4 +1,5 @@
-﻿from pydantic import BaseModel
+# AI辅助生成：豆包 2.0 专家模型, 2026-04-18
+from pydantic import BaseModel
 
 
 class AskRequest(BaseModel):

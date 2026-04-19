@@ -1,4 +1,5 @@
-﻿# -*- coding: utf-8 -*-
+# AI辅助生成：豆包 2.0 专家模型, 2026-04-17
+# -*- coding: utf-8 -*-
 from __future__ import annotations
 
 from pathlib import Path

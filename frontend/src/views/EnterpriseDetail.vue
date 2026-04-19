@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="detail-page space-y-6">
     <header class="panel p-4 sm:p-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
@@ -111,6 +111,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-04-17
 import * as echarts from 'echarts'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { getCompanies, getFinancialDiagnosis } from '../api/finance'

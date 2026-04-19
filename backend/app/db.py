@@ -1,4 +1,5 @@
-﻿from pathlib import Path
+# AI辅助生成：DeepSeek-V3, 2026-03-30
+from pathlib import Path
 import sqlite3
 from typing import Generator
 

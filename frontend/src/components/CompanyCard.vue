@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/72 p-5">
     <div class="mb-2 text-xs uppercase tracking-[0.24em] text-cyan-300">{{ company.sector }}</div>
     <div class="text-2xl font-semibold text-cyan-50">{{ company.company_name }}</div>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-03-31
 defineProps<{
   company: Record<string, any>
 }>()

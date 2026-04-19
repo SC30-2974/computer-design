@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6">
     <div class="mb-4 flex items-center justify-between">
       <h3 class="text-xl font-semibold text-cyan-50">分析报告</h3>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-04-19
 import { onMounted, ref } from 'vue'
 import { generateReport, getCompanies } from '../api/finance'
 

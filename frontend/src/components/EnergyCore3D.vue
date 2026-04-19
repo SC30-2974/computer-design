@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="energy-core-canvas">
     <TresCanvas clear-color="#f3fff8" alpha>
       <TresPerspectiveCamera :position="[0, 0, 7]" :fov="42" />
@@ -66,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-04-17
 import { useLoop } from '@tresjs/core'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import type { Group } from 'three'

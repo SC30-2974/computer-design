@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6">
     <div class="mb-4 flex items-center justify-between">
       <h3 class="text-xl font-semibold text-cyan-50">财务诊断</h3>
@@ -47,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-03-29
 import { onMounted, ref } from 'vue'
 import { getCompanies, getFinancialDiagnosis } from '../api/finance'
 

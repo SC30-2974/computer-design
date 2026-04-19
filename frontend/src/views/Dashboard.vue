@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="flex min-h-full flex-col gap-6">
     <div class="grid gap-4 md:grid-cols-3">
       <article class="rounded-2xl border border-cyan-500/30 bg-slate-950/75 p-5 shadow-[0_12px_30px_rgba(56,189,248,0.18)]">
@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-03-30
 import * as echarts from 'echarts'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { getCompanies } from '../api/finance'

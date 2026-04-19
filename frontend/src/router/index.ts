@@ -1,4 +1,5 @@
-﻿import { createRouter, createWebHistory } from 'vue-router'
+// AI辅助生成：DeepSeek-V3, 2026-04-19
+import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'

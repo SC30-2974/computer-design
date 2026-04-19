@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="min-h-[calc(100vh-9rem)] space-y-6 rounded-3xl border border-cyan-500/30 bg-slate-950/75 p-6">
     <div>
       <h3 class="text-lg font-semibold text-cyan-100">财报数据上传</h3>
@@ -85,6 +85,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-04-19
 import { onMounted, ref } from 'vue'
 import { deleteUpload, getCompanies, getUploadFileUrl, listUploads, refreshData, uploadFinancePdf } from '../api/finance'
 

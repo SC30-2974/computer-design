@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <main class="min-h-screen px-6 py-8 text-cyan-100 lg:px-10">
     <section class="mx-auto max-w-7xl space-y-8">
       <header class="flex flex-col gap-3 rounded-[32px] border border-cyan-500/20 bg-cyan-950/65 p-8 shadow-glow lg:flex-row lg:items-end lg:justify-between">
@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-04-17
 import DiagnosisPanel from '../components/DiagnosisPanel.vue'
 import FinancialChart from '../components/FinancialChart.vue'
 import RagChatPanel from '../components/RagChatPanel.vue'

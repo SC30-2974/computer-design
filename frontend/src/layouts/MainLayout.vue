@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="app-shell relative min-h-screen overflow-x-hidden bg-cyber-grid text-cyan-50">
     <div class="app-glow app-glow-left"></div>
     <div class="app-glow app-glow-right"></div>
@@ -131,6 +131,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-04-16
 import { gsap } from 'gsap'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

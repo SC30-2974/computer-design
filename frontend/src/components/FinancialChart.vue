@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="rounded-3xl border border-cyan-500/30 bg-slate-950/78 p-6 shadow-glow">
     <div class="mb-4 flex items-center justify-between gap-4">
       <div>
@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-04-18
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 import { getMetrics } from '../api/finance'

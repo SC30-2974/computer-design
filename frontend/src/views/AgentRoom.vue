@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="agent-room flex h-screen min-h-screen p-0">
     <div class="flex flex-1 flex-col overflow-hidden rounded-none bg-transparent">
       <div class="flex-1 overflow-hidden p-0">
@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：豆包 2.0 专家模型, 2026-04-16
 // 智能研判室页面采用嵌入 Dify 聊天能力。
 // 容器改为沉浸式全屏，直接让智能体页面占满可视区。
 </script>

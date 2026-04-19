@@ -1,4 +1,5 @@
-﻿from __future__ import annotations
+# AI辅助生成：DeepSeek-V3, 2026-04-17
+from __future__ import annotations
 
 import os
 import sqlite3

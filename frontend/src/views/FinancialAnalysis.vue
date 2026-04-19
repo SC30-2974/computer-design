@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="space-y-6 p-4 sm:p-5">
     <div class="flex flex-wrap items-center gap-3">
       <select v-model="metric" class="report-select rounded-xl border border-cyan-500/30 px-5 py-2.5 text-base font-semibold text-cyan-100" @change="loadData">
@@ -98,6 +98,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-03-28
 import * as echarts from 'echarts'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {

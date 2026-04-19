@@ -1,4 +1,5 @@
-﻿import axios from 'axios'
+// AI辅助生成：DeepSeek-V3, 2026-03-29
+import axios from 'axios'
 
 type CompanyRow = {
   company_name: string

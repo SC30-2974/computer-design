@@ -1,4 +1,5 @@
-﻿from __future__ import annotations
+# AI辅助生成：豆包 2.0 专家模型, 2026-04-16
+from __future__ import annotations
 
 import sqlite3
 from datetime import datetime

@@ -26,7 +26,7 @@
     <div class="hero-center relative z-[1] flex flex-1 items-center justify-center px-2 sm:px-6">
       <div ref="heroPanelRef" class="hero-panel w-full max-w-5xl p-4 text-center sm:p-6">
         <h1 ref="artTitleRef" class="art-title text-3xl font-black leading-tight sm:text-5xl md:text-6xl">
-          欢迎来到新能源财报智能体系统
+          娆㈣繋鏉ュ埌鏂拌兘婧愯储鎶ユ櫤鑳戒綋绯荤粺
         </h1>
       </div>
     </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+// AI辅助生成：DeepSeek-V3, 2026-04-18
 import { gsap } from 'gsap'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
