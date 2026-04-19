@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section ref="homeWrapRef" class="home-wrap relative flex min-h-screen flex-col">
     <div ref="heroGlowRef" class="hero-glow"></div>
     <div class="ambient-grid" aria-hidden="true"></div>
@@ -26,7 +26,7 @@
     <div class="hero-center relative z-[1] flex flex-1 items-center justify-center px-2 sm:px-6">
       <div ref="heroPanelRef" class="hero-panel w-full max-w-5xl p-4 text-center sm:p-6">
         <h1 ref="artTitleRef" class="art-title text-3xl font-black leading-tight sm:text-5xl md:text-6xl">
-          欢迎来到新能源财报智能体系统
+          欢迎来到新能源企业财报问答智能体
         </h1>
       </div>
     </div>
